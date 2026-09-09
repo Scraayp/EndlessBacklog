@@ -40,6 +40,7 @@ the wiki's landing page).
 | [Keyboard-Shortcuts](Keyboard-Shortcuts.md) | End users | Shortcut reference |
 | [Admin-Guide](Admin-Guide.md) | Workspace admins | Managing members/roles, transferring ownership |
 | [Self-Hosting-Configuration](Self-Hosting-Configuration.md) | Operators | Every env var, dialect choice, SMTP, OAuth setup, backups |
+| [Deploying-on-Dokploy](Deploying-on-Dokploy.md) | Operators | Running the compose stack on Dokploy specifically |
 | [API-Overview](API-Overview.md) | Integrators | REST endpoint map, auth scheme |
 | [FAQ](FAQ.md) | Everyone | Common questions |
 | [Roadmap](Roadmap.md) | Everyone | Phase 2+ feature plan |

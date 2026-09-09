@@ -147,6 +147,7 @@ of the service names.
 
 - [wiki/Getting-Started.md](wiki/Getting-Started.md) — first login, first board
 - [wiki/Self-Hosting-Configuration.md](wiki/Self-Hosting-Configuration.md) — every env var, OAuth app setup, backups
+- [wiki/Deploying-on-Dokploy.md](wiki/Deploying-on-Dokploy.md) — running the stack on Dokploy specifically
 - [wiki/Architecture.md](wiki/Architecture.md) — how the pieces fit together
 - [wiki/API-Overview.md](wiki/API-Overview.md) — REST endpoint map
 - [wiki/Database-Schema.md](wiki/Database-Schema.md) — tables and relationships

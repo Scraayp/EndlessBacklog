@@ -28,6 +28,8 @@ no per-board or per-seat limits.
 - **[Self-Hosting Configuration](Self-Hosting-Configuration.md)** — every
   environment variable, choosing PostgreSQL vs. MariaDB, SMTP, OAuth app
   registration, backups
+- **[Deploying on Dokploy](Deploying-on-Dokploy.md)** — running the compose
+  stack on Dokploy specifically
 
 ## For developers / contributors
 
