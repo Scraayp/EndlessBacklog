@@ -1,6 +1,13 @@
 import "dotenv/config";
 import { z } from "zod";
 
+// z.coerce.boolean() is a trap for env vars: it just runs `Boolean(value)`
+// on the raw string, and Boolean("false") is `true` (any non-empty string
+// is truthy in JS). This treats the literal text "true"/"1" as true and
+// everything else (including "false") as false.
+const zBooleanString = () =>
+  z.preprocess((v) => (typeof v === "string" ? v === "true" || v === "1" : v), z.boolean());
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(4000),
@@ -9,7 +16,7 @@ const envSchema = z.object({
 
   DB_DIALECT: z.enum(["postgres", "mariadb"]).default("postgres"),
   DATABASE_URL: z.string().min(1),
-  DB_SSL: z.coerce.boolean().default(false),
+  DB_SSL: zBooleanString().default(false),
 
   REDIS_URL: z.string().min(1),
 
@@ -18,11 +25,11 @@ const envSchema = z.object({
   S3_BUCKET: z.string().min(1),
   S3_ACCESS_KEY: z.string().min(1),
   S3_SECRET_KEY: z.string().min(1),
-  S3_FORCE_PATH_STYLE: z.coerce.boolean().default(true),
+  S3_FORCE_PATH_STYLE: zBooleanString().default(true),
 
   SMTP_HOST: z.string().min(1),
   SMTP_PORT: z.coerce.number().int().positive(),
-  SMTP_SECURE: z.coerce.boolean().default(true),
+  SMTP_SECURE: zBooleanString().default(true),
   SMTP_USER: z.string().min(1),
   SMTP_PASS: z.string().min(1),
   MAIL_FROM: z.string().min(1),
