@@ -1,0 +1,37 @@
+export const NOTIFICATION_TYPES = [
+  "card_assigned",
+  "card_unassigned",
+  "comment_mention",
+  "due_soon",
+  "due_overdue",
+  "workspace_invite",
+  "board_invite",
+] as const;
+export type NotificationType = (typeof NOTIFICATION_TYPES)[number];
+
+export const ACTIVITY_TYPES = [
+  "board.created",
+  "board.updated",
+  "board.archived",
+  "list.created",
+  "list.updated",
+  "list.archived",
+  "list.reordered",
+  "card.created",
+  "card.updated",
+  "card.moved",
+  "card.archived",
+  "card.label_added",
+  "card.label_removed",
+  "card.member_added",
+  "card.member_removed",
+  "checklist.created",
+  "checklist.item_added",
+  "checklist.item_toggled",
+  "comment.added",
+  "comment.updated",
+  "comment.deleted",
+  "attachment.added",
+  "attachment.removed",
+] as const;
+export type ActivityType = (typeof ACTIVITY_TYPES)[number];

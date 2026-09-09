@@ -1,0 +1,155 @@
+name: endlessbacklog
+
+services:
+  # ---------------------------------------------------------------------
+  # Frontend — static SPA served by nginx. No TLS here; front this with
+  # your own reverse proxy if you want HTTPS (see wiki/Self-Hosting-Configuration.md).
+  # ---------------------------------------------------------------------
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:4000}
+        VITE_SOCKET_URL: ${VITE_SOCKET_URL:-http://localhost:4000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  # ---------------------------------------------------------------------
+  # Backend API + Socket.io
+  # ---------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    command: ["api"]
+    env_file: .env
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+        required: false
+      mariadb:
+        condition: service_healthy
+        required: false
+
+  # Background worker (email, notifications, due-date reminders, digests) —
+  # same image as the API, different entrypoint command. Scales independently.
+  backend-worker:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    command: ["worker"]
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+        required: false
+      mariadb:
+        condition: service_healthy
+        required: false
+
+  # ---------------------------------------------------------------------
+  # Database — pick ONE via `docker compose --profile postgres up -d` or
+  # `--profile mariadb up -d`. Both definitions ship side by side; only the
+  # chosen profile's container actually starts. See database/README.md.
+  # ---------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-endlessbacklog}
+      POSTGRES_USER: ${POSTGRES_USER:-endlessbacklog}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-endlessbacklog}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:11
+    profiles: ["mariadb"]
+    environment:
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-endlessbacklog}
+      MARIADB_USER: ${MARIADB_USER:-endlessbacklog}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-changeme}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-changeme_root}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # Cache / sessions / job queue / Socket.io scaling
+  # ---------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # Object storage for attachments/avatars (S3-compatible)
+  # ---------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-endlessbacklog}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme123}
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # One-shot job that creates the attachments bucket, then exits.
+  minio-init:
+    image: minio/mc:latest
+    entrypoint: ["/bin/sh", "/docker/minio-init.sh"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-endlessbacklog}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme123}
+      MINIO_BUCKET: ${S3_BUCKET:-endlessbacklog-attachments}
+    volumes:
+      - ./docker/minio-init.sh:/docker/minio-init.sh:ro
+    depends_on:
+      minio:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+  mariadb-data:
+  redis-data:
+  minio-data:

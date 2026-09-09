@@ -1,0 +1,16 @@
+export const queryKeys = {
+  me: ["me"] as const,
+  workspaces: ["workspaces"] as const,
+  workspace: (id: string) => ["workspaces", id] as const,
+  workspaceMembers: (id: string) => ["workspaces", id, "members"] as const,
+  workspaceBoards: (id: string) => ["workspaces", id, "boards"] as const,
+  board: (id: string) => ["boards", id] as const,
+  boardMembers: (id: string) => ["boards", id, "members"] as const,
+  boardLists: (id: string) => ["boards", id, "lists"] as const,
+  boardCards: (id: string) => ["boards", id, "cards"] as const,
+  boardLabels: (id: string) => ["boards", id, "labels"] as const,
+  card: (id: string) => ["cards", id] as const,
+  cardActivity: (id: string) => ["cards", id, "activity"] as const,
+  notifications: ["notifications"] as const,
+  oauthProviders: ["oauthProviders"] as const,
+};
