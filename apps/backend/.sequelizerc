@@ -1,0 +1,12 @@
+// sequelize-cli loads this via require() in its own CJS context. The backend's
+// package.json sets "type": "module" for our application source, so the
+// database/ tooling directory intentionally uses .cjs files to stay CommonJS
+// regardless of that setting.
+const path = require("path");
+
+module.exports = {
+  config: path.resolve("database", "config.cjs"),
+  "migrations-path": path.resolve("database", "migrations"),
+  "seeders-path": path.resolve("database", "seeders"),
+  "models-path": path.resolve("src", "models"),
+};

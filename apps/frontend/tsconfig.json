@@ -1,0 +1,8 @@
+{
+  "extends": "@endlessbacklog/config-typescript/react.json",
+  "compilerOptions": {
+    "composite": false,
+    "types": ["vite/client"]
+  },
+  "include": ["src"]
+}

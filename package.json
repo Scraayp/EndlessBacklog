@@ -1,0 +1,29 @@
+{
+  "name": "endlessbacklog",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A free, self-hosted Trello alternative and agile planning board.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.15.1",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "seed:demo": "pnpm --filter @endlessbacklog/backend run seed:demo",
+    "migrate": "pnpm --filter @endlessbacklog/backend run migrate",
+    "migrate:undo": "pnpm --filter @endlessbacklog/backend run migrate:undo",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0",
+    "rimraf": "^6.0.0",
+    "prettier": "^3.4.0"
+  }
+}
