@@ -69,8 +69,8 @@ importers:
         specifier: ^3.4.0
         version: 3.5.4
       nodemailer:
-        specifier: ^6.9.16
-        version: 6.10.1
+        specifier: ^9.1.1
+        version: 9.1.1
       otplib:
         specifier: ^12.0.1
         version: 12.0.1
@@ -3365,8 +3365,8 @@ packages:
     resolution: {integrity: sha512-YHs7BmmcsdAI5Ozuf8JZo6PT0mv2GIWC9vMfvUC3dp65M8hn7Ux8CPL+2oBI7juNuj9d0ndhTcznq2ODBps9cQ==}
     engines: {node: '>=18'}
 
-  nodemailer@6.10.1:
-    resolution: {integrity: sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==}
+  nodemailer@9.1.1:
+    resolution: {integrity: sha512-izw9mVKFix6YSnC9eLgV6g1opl9DUlRio9ZNcq+Wu9Ujn2UwF+8Nl0B8nz22kEC+CTZCvinkxwJ0DeFbb6NwcQ==}
     engines: {node: '>=6.0.0'}
 
   nopt@7.2.1:
@@ -7443,7 +7443,7 @@ snapshots:
 
   node-releases@2.0.54: {}
 
-  nodemailer@6.10.1: {}
+  nodemailer@9.1.1: {}
 
   nopt@7.2.1:
     dependencies:
