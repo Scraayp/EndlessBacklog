@@ -2,24 +2,39 @@ import { z } from "zod";
 import { BOARD_ROLES } from "../constants/roles.js";
 import { hexColorSchema, uuidSchema } from "./common.js";
 
+/** backgroundValue must be a hex color for "color", a known gradient key for
+ *  "gradient", or an https:// URL for "image" — checked against the actual
+ *  backgroundType so a board can never end up with a mismatched pair. */
+function validBackgroundValue(data: { backgroundType?: string; backgroundValue?: string }): boolean {
+  if (!data.backgroundValue) return true;
+  if (data.backgroundType === "gradient") return /^[a-z0-9-]+$/.test(data.backgroundValue);
+  if (data.backgroundType === "image") return /^https:\/\/\S+$/.test(data.backgroundValue);
+  if (data.backgroundType === "color" || !data.backgroundType) return hexColorSchema.safeParse(data.backgroundValue).success;
+  return true;
+}
+
+const backgroundValueRefinement = {
+  message: "backgroundValue doesn't match backgroundType",
+  path: ["backgroundValue"],
+};
+
 export const createBoardSchema = z
   .object({
     workspaceId: uuidSchema,
     name: z.string().trim().min(1).max(100),
-    backgroundType: z.enum(["color", "image"]).optional(),
-    backgroundValue: z.string().min(1).optional(),
+    backgroundType: z.enum(["color", "gradient", "image"]).optional(),
+    backgroundValue: z.string().min(1).max(500).optional(),
   })
-  .refine(
-    (data) => data.backgroundType !== "color" || !data.backgroundValue || hexColorSchema.safeParse(data.backgroundValue).success,
-    { message: "backgroundValue must be a hex color when backgroundType is 'color'", path: ["backgroundValue"] },
-  );
+  .refine(validBackgroundValue, backgroundValueRefinement);
 
-export const updateBoardSchema = z.object({
-  name: z.string().trim().min(1).max(100).optional(),
-  backgroundType: z.enum(["color", "image"]).optional(),
-  backgroundValue: z.string().min(1).optional(),
-  isArchived: z.boolean().optional(),
-});
+export const updateBoardSchema = z
+  .object({
+    name: z.string().trim().min(1).max(100).optional(),
+    backgroundType: z.enum(["color", "gradient", "image"]).optional(),
+    backgroundValue: z.string().min(1).max(500).optional(),
+    isArchived: z.boolean().optional(),
+  })
+  .refine(validBackgroundValue, backgroundValueRefinement);
 
 export const reorderBoardSchema = z.object({
   beforeId: uuidSchema.nullable().optional(),

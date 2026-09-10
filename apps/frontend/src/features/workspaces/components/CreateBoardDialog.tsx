@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { BOARD_BACKGROUND_COLORS } from "@endlessbacklog/shared";
+import type { BoardBackgroundType } from "@endlessbacklog/shared";
 import { boardApi } from "../../boards/api.js";
+import { BoardBackgroundPicker } from "../../boards/components/BoardBackgroundPicker.js";
 import { queryKeys } from "../../../lib/queryKeys.js";
+import { ApiError } from "../../../lib/apiClient.js";
 import { Dialog } from "../../../components/ui/Dialog.js";
 import { Button } from "../../../components/ui/Button.js";
 import { Input, Label } from "../../../components/ui/Input.js";
-import { clsx } from "clsx";
-
-const BACKGROUND_COLORS = ["#4bce97", "#579dff", "#9f8fef", "#f5cd47", "#fea362", "#f87168", "#6cc3e0", "#8590a2"];
 
 export function CreateBoardDialog({
   workspaceId,
@@ -22,18 +23,23 @@ export function CreateBoardDialog({
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [name, setName] = useState("");
-  const [color, setColor] = useState(BACKGROUND_COLORS[0]!);
+  const [backgroundType, setBackgroundType] = useState<BoardBackgroundType>("color");
+  const [backgroundValue, setBackgroundValue] = useState(BOARD_BACKGROUND_COLORS[0]!.value);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   async function submit() {
     if (!name.trim()) return;
     setSubmitting(true);
+    setError(null);
     try {
-      const { board } = await boardApi.create({ workspaceId, name: name.trim(), backgroundType: "color", backgroundValue: color });
+      const { board } = await boardApi.create({ workspaceId, name: name.trim(), backgroundType, backgroundValue });
       await qc.invalidateQueries({ queryKey: queryKeys.workspaceBoards(workspaceId) });
       setName("");
       onOpenChange(false);
       navigate(`/boards/${board.id}`);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Could not create board.");
     } finally {
       setSubmitting(false);
     }
@@ -42,22 +48,14 @@ export function CreateBoardDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange} title="Create board">
       <div className="space-y-4">
-        <div
-          className="flex h-24 items-center justify-center rounded-md text-sm font-medium text-white"
-          style={{ backgroundColor: color }}
-        >
-          {name || "Board preview"}
-        </div>
-        <div className="flex gap-1.5">
-          {BACKGROUND_COLORS.map((c) => (
-            <button
-              key={c}
-              onClick={() => setColor(c)}
-              className={clsx("size-7 rounded", color === c && "ring-2 ring-offset-2 ring-offset-background ring-primary-500")}
-              style={{ backgroundColor: c }}
-            />
-          ))}
-        </div>
+        <BoardBackgroundPicker
+          backgroundType={backgroundType}
+          backgroundValue={backgroundValue}
+          onChange={(type, value) => {
+            setBackgroundType(type);
+            setBackgroundValue(value);
+          }}
+        />
         <div>
           <Label htmlFor="board-name">Board name</Label>
           <Input
@@ -68,6 +66,7 @@ export function CreateBoardDialog({
             onKeyDown={(e) => e.key === "Enter" && submit()}
           />
         </div>
+        {error && <p className="text-sm text-danger">{error}</p>}
         <Button className="w-full" onClick={submit} disabled={!name.trim() || submitting}>
           {submitting ? "Creating…" : "Create board"}
         </Button>

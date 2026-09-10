@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { KanbanSquare } from "lucide-react";
+import { LogoMark } from "../../../components/ui/Logo.js";
 
 export function AuthLayout({
   title,
@@ -14,9 +14,7 @@ export function AuthLayout({
     <div className="flex min-h-screen items-center justify-center bg-surface px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-2">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-primary-500 text-white">
-            <KanbanSquare size={22} />
-          </div>
+          <LogoMark size={44} />
           <h1 className="text-xl font-semibold text-foreground">{title}</h1>
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         </div>

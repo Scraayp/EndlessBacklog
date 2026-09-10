@@ -1,0 +1,14 @@
+{
+  "name": "EndlessBacklog",
+  "short_name": "EndlessBacklog",
+  "description": "Free, self-hosted Trello alternative and agile planning board.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "icons": [
+    { "src": "/png/logo-mark-256.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "/png/logo-mark-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/png/apple-touch-icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "maskable" }
+  ]
+}

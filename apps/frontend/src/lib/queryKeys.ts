@@ -6,6 +6,7 @@ export const queryKeys = {
   workspaceBoards: (id: string) => ["workspaces", id, "boards"] as const,
   board: (id: string) => ["boards", id] as const,
   boardMembers: (id: string) => ["boards", id, "members"] as const,
+  boardActivity: (id: string) => ["boards", id, "activity"] as const,
   boardLists: (id: string) => ["boards", id, "lists"] as const,
   boardCards: (id: string) => ["boards", id, "cards"] as const,
   boardLabels: (id: string) => ["boards", id, "labels"] as const,

@@ -5,7 +5,7 @@ import { AppError } from "../utils/AppError.js";
 import { positionAtEnd } from "../utils/position.js";
 import { emitToBoard } from "../sockets/io.js";
 import { SOCKET_EVENTS } from "@endlessbacklog/shared";
-import type { BoardBackgroundType } from "@endlessbacklog/shared";
+import type { BoardBackgroundType, BoardRole } from "@endlessbacklog/shared";
 
 export const boardService = {
   async create(
@@ -61,11 +61,41 @@ export const boardService = {
     return boardRepository.listMembers(boardId);
   },
 
-  addMember(boardId: string, userId: string, role: "admin" | "member" | "observer" = "member") {
-    return boardRepository.addMember(boardId, userId, role);
+  listActivity(boardId: string) {
+    return activityRepository.listForBoard(boardId);
   },
 
-  removeMember(boardId: string, userId: string) {
-    return boardRepository.removeMember(boardId, userId);
+  async addMember(boardId: string, actorId: string, userId: string, role: BoardRole = "member") {
+    const existing = await boardRepository.getMembership(boardId, userId);
+    if (existing) throw AppError.conflict("That person is already on the board");
+    const member = await boardRepository.addMember(boardId, userId, role);
+    await activityRepository.record({ boardId, actorId, type: "board.member_added", metadata: { userId, role } });
+    emitToBoard(boardId, SOCKET_EVENTS.BOARD_MEMBER_CHANGED, { boardId, userId, action: "added" });
+    return member;
+  },
+
+  async updateMemberRole(boardId: string, actorId: string, userId: string, role: BoardRole) {
+    const existing = await boardRepository.getMembership(boardId, userId);
+    if (!existing) throw AppError.notFound("Member not found");
+    if (existing.role === "admin" && role !== "admin") {
+      const adminCount = await boardRepository.countAdmins(boardId);
+      if (adminCount <= 1) throw AppError.badRequest("A board must have at least one admin");
+    }
+    await boardRepository.updateMemberRole(boardId, userId, role);
+    await activityRepository.record({ boardId, actorId, type: "board.member_role_changed", metadata: { userId, role } });
+    emitToBoard(boardId, SOCKET_EVENTS.BOARD_MEMBER_CHANGED, { boardId, userId, action: "roleChanged" });
+    return boardRepository.getMembership(boardId, userId);
+  },
+
+  async removeMember(boardId: string, actorId: string, userId: string) {
+    const existing = await boardRepository.getMembership(boardId, userId);
+    if (existing?.role === "admin") {
+      const adminCount = await boardRepository.countAdmins(boardId);
+      if (adminCount <= 1) throw AppError.badRequest("A board must have at least one admin");
+    }
+    const result = await boardRepository.removeMember(boardId, userId);
+    await activityRepository.record({ boardId, actorId, type: "board.member_removed", metadata: { userId } });
+    emitToBoard(boardId, SOCKET_EVENTS.BOARD_MEMBER_CHANGED, { boardId, userId, action: "removed" });
+    return result;
   },
 };

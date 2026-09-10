@@ -1,23 +1,27 @@
 import { formatDistanceToNow } from "date-fns";
-import { useCardActivity } from "../../cardHooks.js";
-import { activityLabel } from "../../activityLabels.js";
-import { Avatar } from "../../../../components/ui/Avatar.js";
-import { Spinner } from "../../../../components/ui/Spinner.js";
+import { useBoardActivity } from "../hooks.js";
+import { activityLabel } from "../activityLabels.js";
+import { Avatar } from "../../../components/ui/Avatar.js";
+import { Spinner } from "../../../components/ui/Spinner.js";
 
-export function CardActivityLog({ cardId }: { cardId: string }) {
-  const { data, isLoading } = useCardActivity(cardId);
+export function BoardActivityLog({ boardId }: { boardId: string }) {
+  const { data, isLoading } = useBoardActivity(boardId);
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-2">
-        <Spinner size={16} />
+      <div className="flex justify-center py-4">
+        <Spinner size={18} />
       </div>
     );
   }
 
+  if (!data || data.length === 0) {
+    return <p className="py-2 text-sm text-muted-foreground">No activity yet.</p>;
+  }
+
   return (
     <div className="space-y-2.5">
-      {(data ?? []).map((entry) => (
+      {data.map((entry) => (
         <div key={entry.id} className="flex items-start gap-2 text-sm">
           <Avatar name={entry.actor.displayName} src={entry.actor.avatarUrl} size="sm" />
           <p className="text-foreground">

@@ -13,6 +13,7 @@ export const SOCKET_EVENTS = {
   // Board
   BOARD_UPDATED: "board:updated",
   BOARD_ARCHIVED: "board:archived",
+  BOARD_MEMBER_CHANGED: "board:memberChanged",
 
   // Lists
   LIST_CREATED: "list:created",

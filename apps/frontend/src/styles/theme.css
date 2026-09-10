@@ -8,7 +8,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Green brand scale */
+  /* Green accent scale — used deliberately sparingly (primary actions, focus
+     rings, selected states) rather than tinting the neutral chrome. Every
+     other surface below is a true (non-green) neutral gray. */
   --color-primary-50: #ecfdf3;
   --color-primary-100: #d1fae0;
   --color-primary-300: #6ee7ab;
@@ -16,12 +18,13 @@
   --color-primary-600: #15803d;
   --color-primary-700: #166534;
 
+  /* Neutral chrome (zinc-based, no green tint) */
   --color-background: #ffffff;
-  --color-surface: #f4f6f5;
-  --color-surface-hover: #e9ece9;
-  --color-border: #dfe3e0;
-  --color-foreground: #14171a;
-  --color-muted-foreground: #5b6a5f;
+  --color-surface: #f7f7f8;
+  --color-surface-hover: #eeeef0;
+  --color-border: #e4e4e8;
+  --color-foreground: #18181b;
+  --color-muted-foreground: #71717a;
   --color-danger: #dc2626;
   --color-warning: #b45309;
 
@@ -42,12 +45,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: #0f1712;
-    --color-surface: #17211b;
-    --color-surface-hover: #1f2b23;
-    --color-border: #2a352d;
-    --color-foreground: #e7ede9;
-    --color-muted-foreground: #9db3a3;
+    --color-background: #0b0b0d;
+    --color-surface: #17171a;
+    --color-surface-hover: #202024;
+    --color-border: #2b2b30;
+    --color-foreground: #f4f4f5;
+    --color-muted-foreground: #a1a1aa;
     --color-primary-500: #22c55e;
     --color-primary-600: #16a34a;
     --label-green: #1f845a;
@@ -65,12 +68,12 @@
 }
 
 :root.dark {
-  --color-background: #0f1712;
-  --color-surface: #17211b;
-  --color-surface-hover: #1f2b23;
-  --color-border: #2a352d;
-  --color-foreground: #e7ede9;
-  --color-muted-foreground: #9db3a3;
+  --color-background: #0b0b0d;
+  --color-surface: #17171a;
+  --color-surface-hover: #202024;
+  --color-border: #2b2b30;
+  --color-foreground: #f4f4f5;
+  --color-muted-foreground: #a1a1aa;
   --color-primary-500: #22c55e;
   --color-primary-600: #16a34a;
   --label-green: #1f845a;
@@ -118,4 +121,17 @@ body {
 
 * {
   border-color: var(--color-border);
+}
+
+/* Board details slide-over (see BoardDetailsPanel) */
+@keyframes sheet-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.sheet-panel[data-state="open"] {
+  animation: sheet-slide-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }

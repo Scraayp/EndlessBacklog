@@ -25,9 +25,11 @@ export function useBoardSocket(boardId: string | undefined) {
     const invalidateCards = () => qc.invalidateQueries({ queryKey: queryKeys.boardCards(boardId) });
     const invalidateBoard = () => qc.invalidateQueries({ queryKey: queryKeys.board(boardId) });
     const invalidateCard = (cardId: string) => qc.invalidateQueries({ queryKey: queryKeys.card(cardId) });
+    const invalidateMembers = () => qc.invalidateQueries({ queryKey: queryKeys.boardMembers(boardId) });
 
     const onBoardUpdated = () => invalidateBoard();
     const onListChanged = () => invalidateLists();
+    const onMembersChanged = () => invalidateMembers();
 
     const onCardCreated = ({ card }: { card: CardSummary }) => {
       qc.setQueryData<CardSummary[]>(queryKeys.boardCards(boardId), (prev) =>
@@ -56,6 +58,7 @@ export function useBoardSocket(boardId: string | undefined) {
     };
 
     socket.on(SOCKET_EVENTS.BOARD_UPDATED, onBoardUpdated);
+    socket.on(SOCKET_EVENTS.BOARD_MEMBER_CHANGED, onMembersChanged);
     socket.on(SOCKET_EVENTS.LIST_CREATED, onListChanged);
     socket.on(SOCKET_EVENTS.LIST_UPDATED, onListChanged);
     socket.on(SOCKET_EVENTS.LIST_REORDERED, onListChanged);
@@ -76,6 +79,7 @@ export function useBoardSocket(boardId: string | undefined) {
     return () => {
       socket.emit(SOCKET_EVENTS.BOARD_LEAVE, boardId);
       socket.off(SOCKET_EVENTS.BOARD_UPDATED, onBoardUpdated);
+      socket.off(SOCKET_EVENTS.BOARD_MEMBER_CHANGED, onMembersChanged);
       socket.off(SOCKET_EVENTS.LIST_CREATED, onListChanged);
       socket.off(SOCKET_EVENTS.LIST_UPDATED, onListChanged);
       socket.off(SOCKET_EVENTS.LIST_REORDERED, onListChanged);

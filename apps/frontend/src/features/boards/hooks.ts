@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { boardApi, listApi, cardApi, labelApi } from "./api.js";
 import { queryKeys } from "../../lib/queryKeys.js";
-import type { CardSummary, List, UpdateCardInput } from "@endlessbacklog/shared";
+import type { CardSummary, List, UpdateCardInput, BoardRole, BoardBackgroundType } from "@endlessbacklog/shared";
 
 export const useBoard = (boardId: string) =>
   useQuery({ queryKey: queryKeys.board(boardId), queryFn: () => boardApi.get(boardId), enabled: !!boardId });
@@ -33,6 +33,50 @@ export const useBoardMembers = (boardId: string) =>
     queryFn: () => boardApi.listMembers(boardId).then((r) => r.members),
     enabled: !!boardId,
   });
+
+export const useBoardActivity = (boardId: string) =>
+  useQuery({
+    queryKey: queryKeys.boardActivity(boardId),
+    queryFn: () => boardApi.listActivity(boardId).then((r) => r.activity),
+    enabled: !!boardId,
+  });
+
+export function useUpdateBoard(boardId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: Partial<{ name: string; backgroundType: BoardBackgroundType; backgroundValue: string; isArchived: boolean }>) =>
+      boardApi.update(boardId, data),
+    onSuccess: ({ board }) => {
+      qc.setQueryData(queryKeys.board(boardId), (prev: { board: typeof board; myRole: BoardRole } | undefined) =>
+        prev ? { ...prev, board } : prev,
+      );
+    },
+  });
+}
+
+export function useAddBoardMember(boardId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ userId, role }: { userId: string; role?: BoardRole }) => boardApi.addMember(boardId, userId, role),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.boardMembers(boardId) }),
+  });
+}
+
+export function useUpdateBoardMemberRole(boardId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ userId, role }: { userId: string; role: BoardRole }) => boardApi.updateMemberRole(boardId, userId, role),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.boardMembers(boardId) }),
+  });
+}
+
+export function useRemoveBoardMember(boardId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (userId: string) => boardApi.removeMember(boardId, userId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.boardMembers(boardId) }),
+  });
+}
 
 export function useCreateList(boardId: string) {
   const qc = useQueryClient();

@@ -13,6 +13,7 @@ import { WorkspaceDashboardPage } from "../features/workspaces/pages/WorkspaceDa
 import { WorkspaceSettingsPage } from "../features/workspaces/pages/WorkspaceSettingsPage.js";
 import { BoardViewPage } from "../features/boards/pages/BoardViewPage.js";
 import { CardModal } from "../features/boards/components/CardModal/CardModal.js";
+import { BoardDetailsPanel } from "../features/boards/components/BoardDetailsPanel.js";
 import { NotificationsPage } from "../pages/NotificationsPage.js";
 import { ProfileSettingsPage } from "../pages/ProfileSettingsPage.js";
 
@@ -38,7 +39,10 @@ export const router = createBrowserRouter([
           {
             path: "boards/:boardId",
             element: <BoardViewPage />,
-            children: [{ path: "cards/:cardId", element: <CardModal /> }],
+            children: [
+              { path: "cards/:cardId", element: <CardModal /> },
+              { path: "details", element: <BoardDetailsPanel /> },
+            ],
           },
           { path: "notifications", element: <NotificationsPage /> },
           { path: "settings/profile", element: <ProfileSettingsPage /> },

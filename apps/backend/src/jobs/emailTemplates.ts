@@ -11,8 +11,23 @@ function wrap(title: string, bodyHtml: string): string {
         <td align="center">
           <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
             <tr>
-              <td style="background:${BRAND_COLOR};padding:20px 32px;">
-                <span style="color:#fff;font-size:18px;font-weight:700;">EndlessBacklog</span>
+              <td style="background:${BRAND_COLOR};padding:16px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding-right:10px;">
+                      <img
+                        src="${env.FRONTEND_URL}/png/logo-mark-knockout-512.png"
+                        width="28"
+                        height="28"
+                        alt="EndlessBacklog"
+                        style="display:block;border-radius:7px;"
+                      />
+                    </td>
+                    <td>
+                      <span style="color:#fff;font-size:18px;font-weight:700;">EndlessBacklog</span>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
             <tr>

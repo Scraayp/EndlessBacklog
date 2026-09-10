@@ -1,5 +1,5 @@
 import { Board, BoardMember, User, Workspace } from "../models/index.js";
-import type { BoardRole } from "@endlessbacklog/shared";
+import type { BoardRole, BoardBackgroundType } from "@endlessbacklog/shared";
 
 export const boardRepository = {
   findById(id: string) {
@@ -8,7 +8,7 @@ export const boardRepository = {
   create(data: {
     workspaceId: string;
     name: string;
-    backgroundType?: "color" | "image";
+    backgroundType?: BoardBackgroundType;
     backgroundValue?: string;
     position: number;
     createdById: string;
@@ -34,8 +34,14 @@ export const boardRepository = {
   removeMember(boardId: string, userId: string) {
     return BoardMember.destroy({ where: { boardId, userId } });
   },
+  updateMemberRole(boardId: string, userId: string, role: BoardRole) {
+    return BoardMember.update({ role }, { where: { boardId, userId } });
+  },
   listMembers(boardId: string) {
     return BoardMember.findAll({ where: { boardId }, include: [{ model: User, as: "user" }] });
+  },
+  countAdmins(boardId: string) {
+    return BoardMember.count({ where: { boardId, role: "admin" } });
   },
   findWithWorkspace(id: string) {
     return Board.findByPk(id, { include: [{ model: Workspace, as: "workspace" }] });

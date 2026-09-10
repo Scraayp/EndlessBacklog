@@ -13,9 +13,21 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { SortableContext, horizontalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
-import { Plus } from "lucide-react";
+import { Plus, Info } from "lucide-react";
+import { boardBackgroundStyle } from "@endlessbacklog/shared";
 import type { CardSummary, List } from "@endlessbacklog/shared";
-import { useBoard, useBoardLists, useBoardCards, useBoardLabels, useCreateList, useUpdateList, useReorderList, useCreateCard, useMoveCard } from "../hooks.js";
+import {
+  useBoard,
+  useBoardLists,
+  useBoardCards,
+  useBoardLabels,
+  useBoardMembers,
+  useCreateList,
+  useUpdateList,
+  useReorderList,
+  useCreateCard,
+  useMoveCard,
+} from "../hooks.js";
 import { useBoardSocket } from "../useBoardSocket.js";
 import { queryKeys } from "../../../lib/queryKeys.js";
 import { ListColumn } from "../components/ListColumn.js";
@@ -24,6 +36,7 @@ import { useCardFilter } from "../components/SearchFilterBar.js";
 import { Spinner } from "../../../components/ui/Spinner.js";
 import { Button } from "../../../components/ui/Button.js";
 import { Input } from "../../../components/ui/Input.js";
+import { AvatarStack } from "../../../components/ui/Avatar.js";
 
 // Stable empty-array references so `data ?? EMPTY_*` doesn't change identity
 // on every render while a query is still loading (which would otherwise
@@ -39,6 +52,7 @@ export function BoardViewPage() {
   const boardQuery = useBoard(boardId!);
   const listsQuery = useBoardLists(boardId!);
   const cardsQuery = useBoardCards(boardId!);
+  const membersQuery = useBoardMembers(boardId!);
   useBoardLabels(boardId!); // pre-warm cache for filter bar / card modal
   useBoardSocket(boardId);
 
@@ -161,12 +175,30 @@ export function BoardViewPage() {
   }
 
   const board = boardQuery.data?.board;
+  const members = membersQuery.data ?? [];
 
   return (
-    <div className="flex h-full flex-col" style={board?.backgroundType === "color" ? { backgroundColor: `${board.backgroundValue}22` } : undefined}>
-      <div className="flex items-center justify-between gap-4 border-b border-border bg-background/70 px-4 py-2.5 backdrop-blur">
-        <h1 className="truncate text-base font-semibold text-foreground">{board?.name}</h1>
-        <FilterBar />
+    <div
+      className="flex h-full flex-col bg-cover bg-center"
+      style={board ? boardBackgroundStyle(board.backgroundType, board.backgroundValue) : undefined}
+    >
+      <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-black/15 px-4 py-2.5 backdrop-blur-md">
+        <h1 className="truncate text-base font-semibold text-white drop-shadow">{board?.name}</h1>
+        <div className="flex items-center gap-2">
+          <FilterBar />
+          {members.length > 0 && (
+            <button
+              onClick={() => navigate(`/boards/${boardId}/details`)}
+              title="Board members"
+              className="rounded-full transition-transform hover:scale-105"
+            >
+              <AvatarStack users={members.map((m) => m.user)} max={5} />
+            </button>
+          )}
+          <Button variant="secondary" size="sm" className="bg-white/90 hover:bg-white" onClick={() => navigate(`/boards/${boardId}/details`)}>
+            <Info size={14} /> Details
+          </Button>
+        </div>
       </div>
 
       <DndContext

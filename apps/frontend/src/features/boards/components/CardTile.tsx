@@ -30,7 +30,7 @@ export function CardTile({ card, onOpen }: CardTileProps) {
       {...listeners}
       onClick={onOpen}
       className={clsx(
-        "cursor-pointer rounded-md border border-border bg-background p-2.5 shadow-sm transition-shadow hover:shadow-md",
+        "cursor-pointer rounded-lg border border-border bg-background p-2.5 shadow-sm transition-shadow hover:shadow-md",
         isDragging && "opacity-40",
       )}
     >

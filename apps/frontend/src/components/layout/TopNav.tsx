@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { KanbanSquare, ChevronDown, LogOut, UserCog, Sun, Moon, Laptop } from "lucide-react";
+import { ChevronDown, LogOut, UserCog, Sun, Moon, Laptop } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore.js";
 import { useThemeStore } from "../../stores/themeStore.js";
 import { useAuth } from "../../features/auth/useAuth.js";
 import { useWorkspaces } from "../../features/workspaces/hooks.js";
 import { NotificationDropdown } from "../../features/notifications/NotificationDropdown.js";
 import { Avatar } from "../ui/Avatar.js";
+import { LogoMark } from "../ui/Logo.js";
 import { DropdownMenu, DropdownItem, DropdownSeparator } from "../ui/DropdownMenu.js";
 
 const THEME_ICONS = { light: Sun, dark: Moon, system: Laptop };
@@ -57,11 +58,9 @@ export function TopNav() {
   const navigate = useNavigate();
 
   return (
-    <header className="flex h-13 shrink-0 items-center gap-2 border-b border-border bg-background px-3 py-2">
+    <header className="flex h-13 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-3 py-2 backdrop-blur-sm">
       <Link to="/workspaces" className="flex items-center gap-1.5 pr-2 font-semibold text-foreground">
-        <span className="flex size-7 items-center justify-center rounded-md bg-primary-500 text-white">
-          <KanbanSquare size={16} />
-        </span>
+        <LogoMark size={26} className="shadow-sm shadow-primary-500/30" />
         EndlessBacklog
       </Link>
       <WorkspaceSwitcher />

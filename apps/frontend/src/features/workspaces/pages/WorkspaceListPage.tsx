@@ -42,7 +42,8 @@ export function WorkspaceListPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-lg border border-dashed border-border p-10 text-center">
+        <div className="flex flex-col items-center rounded-lg border border-dashed border-border p-10 text-center">
+          <img src="/png/logo-mark-muted-160.png" alt="" aria-hidden="true" width={64} height={64} className="mb-3 opacity-80" />
           <p className="text-sm text-muted-foreground">You're not in any workspaces yet.</p>
           <Button className="mt-3" onClick={() => setCreating(true)}>
             <Plus size={16} /> Create your first workspace

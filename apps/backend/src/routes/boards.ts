@@ -3,6 +3,7 @@ import {
   createBoardSchema,
   updateBoardSchema,
   addBoardMemberSchema,
+  updateBoardMemberRoleSchema,
 } from "@endlessbacklog/shared";
 import { validate } from "../middleware/validate.js";
 import { requireAuth } from "../middleware/auth.js";
@@ -27,11 +28,18 @@ boardRouter.get("/:boardId", requireBoardRole("observer"), boardController.get);
 boardRouter.patch("/:boardId", requireBoardRole("admin"), validate(updateBoardSchema), boardController.update);
 
 boardRouter.get("/:boardId/members", requireBoardRole("observer"), boardController.listMembers);
+boardRouter.get("/:boardId/activity", requireBoardRole("observer"), boardController.listActivity);
 boardRouter.post(
   "/:boardId/members",
   requireBoardRole("admin"),
   validate(addBoardMemberSchema),
   boardController.addMember,
+);
+boardRouter.patch(
+  "/:boardId/members/:userId",
+  requireBoardRole("admin"),
+  validate(updateBoardMemberRoleSchema),
+  boardController.updateMember,
 );
 boardRouter.delete("/:boardId/members/:userId", requireBoardRole("admin"), boardController.removeMember);
 

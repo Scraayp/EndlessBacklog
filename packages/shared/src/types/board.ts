@@ -1,14 +1,15 @@
 import type { BoardRole } from "../constants/roles.js";
 import type { UserPublic } from "./auth.js";
 
-export type BoardBackgroundType = "color" | "image";
+export type BoardBackgroundType = "color" | "gradient" | "image";
 
 export interface Board {
   id: string;
   workspaceId: string;
   name: string;
   backgroundType: BoardBackgroundType;
-  /** Hex string for "color", MinIO object key for "image". */
+  /** Hex string for "color", a curated gradient key for "gradient" (see
+   *  constants/boardBackgrounds.ts), or an https:// image URL for "image". */
   backgroundValue: string;
   isArchived: boolean;
   position: number;

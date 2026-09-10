@@ -50,7 +50,7 @@ export function ListColumn({ list, cards, onAddCard, onRename, onArchive, onOpen
       ref={setNodeRef}
       style={style}
       className={clsx(
-        "flex max-h-full w-72 shrink-0 flex-col rounded-lg bg-surface",
+        "flex max-h-full w-72 shrink-0 flex-col rounded-xl bg-surface shadow-sm",
         isDragging && "opacity-40",
       )}
     >

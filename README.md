@@ -1,6 +1,10 @@
-# EndlessBacklog
+<p align="center">
+  <img src="apps/frontend/public/png/logo-mark-512.png" width="88" height="88" alt="EndlessBacklog logo">
+</p>
 
-**A free, self-hosted Trello alternative and agile planning board.**
+<h1 align="center">EndlessBacklog</h1>
+
+<p align="center"><strong>A free, self-hosted Trello alternative and agile planning board.</strong></p>
 
 Boards, lists, cards, checklists, labels, comments, attachments, real-time
 collaboration, notifications, two-factor auth, OAuth login — without anyone's

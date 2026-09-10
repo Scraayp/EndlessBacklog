@@ -30,13 +30,26 @@ export const boardController = {
     res.status(200).json({ members });
   },
 
+  async listActivity(req: Request, res: Response) {
+    const activity = await boardService.listActivity(param(req, "boardId"));
+    res.status(200).json({ activity });
+  },
+
   async addMember(req: Request, res: Response) {
-    const member = await boardService.addMember(param(req, "boardId"), req.body.userId, req.body.role);
+    if (!req.user) throw AppError.unauthorized();
+    const member = await boardService.addMember(param(req, "boardId"), req.user.id, req.body.userId, req.body.role);
     res.status(201).json({ member });
   },
 
+  async updateMember(req: Request, res: Response) {
+    if (!req.user) throw AppError.unauthorized();
+    const member = await boardService.updateMemberRole(param(req, "boardId"), req.user.id, param(req, "userId"), req.body.role);
+    res.status(200).json({ member });
+  },
+
   async removeMember(req: Request, res: Response) {
-    await boardService.removeMember(param(req, "boardId"), param(req, "userId"));
+    if (!req.user) throw AppError.unauthorized();
+    await boardService.removeMember(param(req, "boardId"), req.user.id, param(req, "userId"));
     res.status(204).send();
   },
 };

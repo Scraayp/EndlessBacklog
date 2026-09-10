@@ -12,20 +12,24 @@ import type {
   AttachmentWithUrl,
   ActivityLogEntryWithActor,
   BoardRole,
+  BoardBackgroundType,
   UpdateCardInput,
 } from "@endlessbacklog/shared";
 
 export const boardApi = {
   get: (boardId: string) => api.get<{ board: Board; myRole: BoardRole }>(`/boards/${boardId}`),
-  update: (boardId: string, data: Partial<{ name: string; backgroundType: string; backgroundValue: string; isArchived: boolean }>) =>
+  update: (boardId: string, data: Partial<{ name: string; backgroundType: BoardBackgroundType; backgroundValue: string; isArchived: boolean }>) =>
     api.patch<{ board: Board }>(`/boards/${boardId}`, data),
-  create: (data: { workspaceId: string; name: string; backgroundType?: "color" | "image"; backgroundValue?: string }) =>
+  create: (data: { workspaceId: string; name: string; backgroundType?: BoardBackgroundType; backgroundValue?: string }) =>
     api.post<{ board: Board }>("/boards", data),
 
   listMembers: (boardId: string) => api.get<{ members: BoardMemberWithUser[] }>(`/boards/${boardId}/members`),
   addMember: (boardId: string, userId: string, role: BoardRole = "member") =>
-    api.post<void>(`/boards/${boardId}/members`, { userId, role }),
+    api.post<{ member: BoardMemberWithUser }>(`/boards/${boardId}/members`, { userId, role }),
+  updateMemberRole: (boardId: string, userId: string, role: BoardRole) =>
+    api.patch<{ member: BoardMemberWithUser }>(`/boards/${boardId}/members/${userId}`, { role }),
   removeMember: (boardId: string, userId: string) => api.delete<void>(`/boards/${boardId}/members/${userId}`),
+  listActivity: (boardId: string) => api.get<{ activity: ActivityLogEntryWithActor[] }>(`/boards/${boardId}/activity`),
 
   listLists: (boardId: string) => api.get<{ lists: List[] }>(`/boards/${boardId}/lists`),
   listCards: (boardId: string) => api.get<{ cards: CardSummary[] }>(`/boards/${boardId}/cards`),

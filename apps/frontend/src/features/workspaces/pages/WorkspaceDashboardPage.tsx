@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useParams, Outlet } from "react-router-dom";
-import { Plus, Settings } from "lucide-react";
+import { Plus, Settings, LayoutGrid } from "lucide-react";
+import { boardBackgroundStyle } from "@endlessbacklog/shared";
 import { useWorkspace, useWorkspaceBoards } from "../hooks.js";
 import { CreateBoardDialog } from "../components/CreateBoardDialog.js";
 import { Button } from "../../../components/ui/Button.js";
@@ -15,9 +16,14 @@ export function WorkspaceDashboardPage() {
   return (
     <div className="mx-auto max-w-5xl p-6">
       <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-foreground">{data?.workspace.name}</h1>
-          {data?.workspace.description && <p className="text-sm text-muted-foreground">{data.workspace.description}</p>}
+        <div className="flex items-center gap-2.5">
+          <span className="flex size-9 items-center justify-center rounded-lg bg-primary-500/10 text-primary-600 dark:text-primary-300">
+            <LayoutGrid size={18} />
+          </span>
+          <div>
+            <h1 className="text-xl font-semibold text-foreground">{data?.workspace.name}</h1>
+            {data?.workspace.description && <p className="text-sm text-muted-foreground">{data.workspace.description}</p>}
+          </div>
         </div>
         <div className="flex gap-2">
           <Link to={`/workspaces/${workspaceId}/settings`}>
@@ -41,19 +47,27 @@ export function WorkspaceDashboardPage() {
             <Link
               key={board.id}
               to={`/boards/${board.id}`}
-              className="flex h-24 items-end rounded-lg p-3 text-sm font-medium text-white shadow-sm transition-transform hover:scale-[1.02]"
-              style={{ backgroundColor: board.backgroundType === "color" ? board.backgroundValue : undefined }}
+              className="group relative flex h-28 flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center p-3 shadow-sm ring-1 ring-black/5 transition-all hover:shadow-md hover:ring-black/10"
+              style={boardBackgroundStyle(board.backgroundType, board.backgroundValue)}
             >
-              <span className="drop-shadow">{board.name}</span>
+              <div className="absolute inset-x-0 bottom-0 h-14 bg-linear-to-t from-black/40 to-transparent" />
+              <span className="relative truncate text-sm font-semibold text-white [text-shadow:0_1px_2px_rgb(0_0_0/0.4)]">
+                {board.name}
+              </span>
             </Link>
           ))}
           <button
             onClick={() => setCreating(true)}
-            className="flex h-24 items-center justify-center rounded-lg border-2 border-dashed border-border text-sm text-muted-foreground hover:border-primary-500 hover:text-primary-500"
+            className="flex h-28 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-border text-sm text-muted-foreground transition-colors hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-300"
           >
-            <Plus size={16} className="mr-1" /> Create board
+            <Plus size={18} />
+            Create board
           </button>
         </div>
+      )}
+
+      {boards && boards.length === 0 && !isLoading && (
+        <p className="mt-2 text-sm text-muted-foreground">No boards yet — create your first one to get started.</p>
       )}
 
       {workspaceId && <CreateBoardDialog workspaceId={workspaceId} open={creating} onOpenChange={setCreating} />}
