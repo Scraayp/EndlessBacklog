@@ -24,14 +24,14 @@ function ThemeSection() {
   return (
     <section className="mb-8">
       <h2 className="mb-3 text-sm font-semibold text-foreground">Appearance</h2>
-      <div className="flex gap-2">
+      <div className="inline-flex gap-1 rounded-full bg-[var(--sunken)] p-1">
         {options.map((o) => (
           <button
             key={o.value}
             onClick={() => setPreference(o.value)}
             className={clsx(
-              "rounded-md border px-3 py-1.5 text-sm",
-              preference === o.value ? "border-primary-500 bg-primary-50 text-primary-700 dark:bg-primary-700/20 dark:text-primary-100" : "border-border text-foreground hover:bg-surface-hover",
+              "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+              preference === o.value ? "bg-[var(--accent-soft)] text-[var(--accent)]" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {o.label}
@@ -130,7 +130,7 @@ function TwoFactorSection() {
       <h2 className="mb-3 text-sm font-semibold text-foreground">Two-factor authentication</h2>
 
       {backupCodes ? (
-        <div className="rounded-md border border-border bg-surface p-3">
+        <div className="glass rounded-[var(--r-md)] p-3">
           <p className="mb-2 text-sm text-foreground">Save these backup codes somewhere safe — each can be used once if you lose your device.</p>
           <div className="grid grid-cols-2 gap-1 font-mono text-xs text-foreground">
             {backupCodes.map((c) => (
@@ -145,7 +145,7 @@ function TwoFactorSection() {
         <TwoFactorDisableForm onDisable={disable} error={error} />
       ) : setup ? (
         <form onSubmit={handleSubmit(confirm)} className="space-y-3">
-          <img src={setup.qrDataUrl} alt="2FA QR code" className="rounded-md border border-border" width={180} height={180} />
+          <img src={setup.qrDataUrl} alt="2FA QR code" className="rounded-[var(--r-md)] border border-[var(--rule)]" width={180} height={180} />
           <div>
             <Label htmlFor="2fa-code">Enter the 6-digit code from your app</Label>
             <Input id="2fa-code" maxLength={6} inputMode="numeric" {...register("code")} />

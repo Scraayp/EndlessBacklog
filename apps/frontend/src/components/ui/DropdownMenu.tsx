@@ -16,7 +16,7 @@ export function DropdownMenu({ trigger, children, align = "end" }: DropdownMenuP
         <RadixDropdown.Content
           align={align}
           sideOffset={6}
-          className="z-50 min-w-48 rounded-lg border border-border bg-background p-1 shadow-lg focus:outline-none"
+          className="glass z-50 min-w-48 rounded-[var(--r-xl)] p-1.5 shadow-[var(--shadow-lg)] focus:outline-none"
         >
           {children}
         </RadixDropdown.Content>
@@ -32,8 +32,8 @@ export function DropdownItem({
   return (
     <RadixDropdown.Item
       className={clsx(
-        "flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-sm text-foreground outline-none",
-        "data-[highlighted]:bg-surface-hover",
+        "flex cursor-pointer items-center gap-2 rounded-[var(--r-sm)] px-2.5 py-1.5 text-sm text-foreground outline-none transition-colors",
+        "data-[highlighted]:bg-[var(--accent-soft)]",
         className,
       )}
       {...props}
@@ -41,4 +41,4 @@ export function DropdownItem({
   );
 }
 
-export const DropdownSeparator = () => <RadixDropdown.Separator className="my-1 h-px bg-border" />;
+export const DropdownSeparator = () => <RadixDropdown.Separator className="my-1 h-px bg-[var(--rule)]" />;

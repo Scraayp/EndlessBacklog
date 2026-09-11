@@ -66,7 +66,7 @@ export function useCardFilter(boardId: string) {
                 placeholder="Search cards…"
                 value={filter.text}
                 onChange={(e) => setFilter((f) => ({ ...f, text: e.target.value }))}
-                className="h-8 w-48 pl-8"
+                className="h-8 w-48 rounded-full pl-8"
               />
             </div>
             <Popover
@@ -80,13 +80,16 @@ export function useCardFilter(boardId: string) {
             >
               <div className="space-y-3">
                 <div>
-                  <p className="mb-1.5 text-xs font-semibold uppercase text-muted-foreground">Labels</p>
+                  <p className="kicker mb-1.5">Labels</p>
                   <div className="flex flex-wrap gap-1.5">
                     {labels.map((l) => (
                       <button
                         key={l.id}
                         onClick={() => setFilter((f) => ({ ...f, labelIds: toggle(f.labelIds, l.id) }))}
-                        className={clsx("rounded", filter.labelIds.has(l.id) && "ring-2 ring-primary-500")}
+                        className={clsx(
+                          "rounded-full transition-shadow",
+                          filter.labelIds.has(l.id) && "ring-2 ring-[var(--accent)]",
+                        )}
                       >
                         <LabelChip color={l.color} name={l.name} />
                       </button>
@@ -94,13 +97,13 @@ export function useCardFilter(boardId: string) {
                   </div>
                 </div>
                 <div>
-                  <p className="mb-1.5 text-xs font-semibold uppercase text-muted-foreground">Members</p>
+                  <p className="kicker mb-1.5">Members</p>
                   <div className="flex flex-wrap gap-1.5">
                     {members.map((m) => (
                       <button
                         key={m.userId}
                         onClick={() => setFilter((f) => ({ ...f, memberIds: toggle(f.memberIds, m.userId) }))}
-                        className={clsx("rounded-full", filter.memberIds.has(m.userId) && "ring-2 ring-primary-500")}
+                        className={clsx("rounded-full transition-shadow", filter.memberIds.has(m.userId) && "ring-2 ring-[var(--accent)]")}
                       >
                         <Avatar name={m.user.displayName} src={m.user.avatarUrl} size="sm" />
                       </button>
@@ -108,15 +111,15 @@ export function useCardFilter(boardId: string) {
                   </div>
                 </div>
                 <div>
-                  <p className="mb-1.5 text-xs font-semibold uppercase text-muted-foreground">Due date</p>
+                  <p className="kicker mb-1.5">Due date</p>
                   <div className="flex flex-wrap gap-1.5">
                     {(["overdue", "due_soon", "no_due_date"] as const).map((d) => (
                       <button
                         key={d}
                         onClick={() => setFilter((f) => ({ ...f, dueFilter: f.dueFilter === d ? null : d }))}
                         className={clsx(
-                          "rounded-md border border-border px-2 py-1 text-xs",
-                          filter.dueFilter === d ? "bg-primary-500 text-white" : "hover:bg-surface-hover",
+                          "rounded-full border border-[var(--rule)] px-2.5 py-1 text-xs transition-colors",
+                          filter.dueFilter === d ? "border-transparent bg-[var(--accent)] text-white" : "hover:bg-[var(--sunken)]",
                         )}
                       >
                         {d === "overdue" ? "Overdue" : d === "due_soon" ? "Due soon" : "No due date"}

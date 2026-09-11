@@ -50,7 +50,7 @@ export function ListColumn({ list, cards, onAddCard, onRename, onArchive, onOpen
       ref={setNodeRef}
       style={style}
       className={clsx(
-        "flex max-h-full w-72 shrink-0 flex-col rounded-xl bg-surface shadow-sm",
+        "glass flex max-h-full w-72 shrink-0 flex-col rounded-[var(--r-md)]",
         isDragging && "opacity-40",
       )}
     >
@@ -73,14 +73,17 @@ export function ListColumn({ list, cards, onAddCard, onRename, onArchive, onOpen
         ) : (
           <button
             onClick={() => setEditing(true)}
-            className="min-w-0 flex-1 truncate rounded px-1.5 py-1 text-left text-sm font-semibold text-foreground hover:bg-surface-hover"
+            className="kicker min-w-0 flex-1 truncate rounded-[var(--r-sm)] px-1.5 py-1 text-left hover:bg-[var(--sunken)] hover:text-foreground"
           >
             {list.name}
           </button>
         )}
+        {cards.length > 0 && (
+          <span className="kicker rounded-full bg-[var(--sunken)] px-2 py-0.5 tabular-nums">{cards.length}</span>
+        )}
         <DropdownMenu
           trigger={
-            <button className="rounded p-1 text-muted-foreground hover:bg-surface-hover">
+            <button className="rounded-full p-1 text-muted-foreground hover:bg-[var(--sunken)]">
               <MoreHorizontal size={16} />
             </button>
           }

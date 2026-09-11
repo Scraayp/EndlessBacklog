@@ -17,7 +17,7 @@ export function NotificationDropdown() {
   return (
     <DropdownMenu
       trigger={
-        <button className="relative rounded-md p-2 text-muted-foreground hover:bg-surface-hover hover:text-foreground">
+        <button className="relative rounded-full p-2 text-muted-foreground hover:bg-[var(--sunken)] hover:text-foreground">
           <Bell size={18} />
           {unreadCount > 0 && (
             <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-danger text-[9px] font-bold text-white">
@@ -28,7 +28,7 @@ export function NotificationDropdown() {
       }
     >
       <div className="flex items-center justify-between px-2 py-1">
-        <span className="text-xs font-semibold uppercase text-muted-foreground">Notifications</span>
+        <span className="kicker">Notifications</span>
         {unreadCount > 0 && (
           <button onClick={() => markAllRead.mutate()} className="text-xs text-primary-600 hover:underline">
             Mark all read
@@ -41,7 +41,7 @@ export function NotificationDropdown() {
         {notifications.slice(0, 20).map((n) => (
           <DropdownItem
             key={n.id}
-            className={n.isRead ? "" : "bg-primary-50 dark:bg-primary-700/20"}
+            className={n.isRead ? "" : "bg-[var(--accent-soft)]"}
             onSelect={() => {
               if (!n.isRead) markRead.mutate(n.id);
               const link = notificationLink(n);

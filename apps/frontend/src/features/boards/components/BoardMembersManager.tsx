@@ -47,7 +47,7 @@ export function BoardMembersManager({ boardId, workspaceId, currentUserId, canMa
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase text-muted-foreground">
+        <p className="kicker">
           {members.length} {members.length === 1 ? "member" : "members"}
         </p>
         {canManage && (
@@ -73,7 +73,7 @@ export function BoardMembersManager({ boardId, workspaceId, currentUserId, canMa
           <Spinner size={18} />
         </div>
       ) : (
-        <ul className="divide-y divide-border rounded-lg border border-border">
+        <ul className="glass divide-y divide-[var(--rule)] rounded-[var(--r-md)]">
           {members.map((m) => (
             <li key={m.id} className="flex items-center gap-2.5 p-2.5">
               <Avatar name={m.user.displayName} src={m.user.avatarUrl} size="sm" />
@@ -89,7 +89,7 @@ export function BoardMembersManager({ boardId, workspaceId, currentUserId, canMa
                   <select
                     value={m.role}
                     onChange={(e) => handleRoleChange(m.userId, e.target.value as BoardRole)}
-                    className="rounded-md border border-border bg-background px-2 py-1 text-xs capitalize text-foreground"
+                    className="rounded-full border border-[var(--rule)] bg-[var(--sunken)] px-2.5 py-1 text-xs capitalize text-foreground"
                   >
                     {BOARD_ROLES.map((r) => (
                       <option key={r} value={r}>
@@ -100,7 +100,7 @@ export function BoardMembersManager({ boardId, workspaceId, currentUserId, canMa
                   <button
                     onClick={() => handleRemove(m.userId)}
                     title="Remove from board"
-                    className="rounded p-1.5 text-muted-foreground hover:bg-surface-hover hover:text-danger"
+                    className="rounded-full p-1.5 text-muted-foreground hover:bg-[var(--sunken)] hover:text-danger"
                   >
                     <X size={14} />
                   </button>
@@ -141,7 +141,7 @@ function AddMemberPopover({
         </Button>
       }
     >
-      <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Workspace members</p>
+      <p className="kicker mb-2">Workspace members</p>
       {candidates.length === 0 ? (
         <p className="py-2 text-sm text-muted-foreground">Everyone in the workspace is already on this board.</p>
       ) : (
@@ -153,7 +153,7 @@ function AddMemberPopover({
                 onAdd(m.user!.id);
                 setOpen(false);
               }}
-              className="flex w-full items-center gap-2 rounded-md p-1.5 text-left text-sm hover:bg-surface-hover"
+              className="flex w-full items-center gap-2 rounded-full p-1.5 text-left text-sm hover:bg-[var(--sunken)]"
             >
               <Avatar name={m.user!.displayName} src={m.user!.avatarUrl} size="sm" />
               <span className="flex-1 truncate">{m.user!.displayName}</span>

@@ -38,9 +38,9 @@ export function CardModal() {
   return (
     <RadixDialog.Root open onOpenChange={(open) => !open && close()}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
+        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" />
         <RadixDialog.Content
-          className="fixed left-1/2 top-1/2 z-50 flex max-h-[88vh] w-[calc(100vw-2rem)] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-2xl focus:outline-none"
+          className="glass fixed left-1/2 top-1/2 z-50 flex max-h-[88vh] w-[calc(100vw-2rem)] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[var(--r-xl)] shadow-[var(--shadow-lg)] focus:outline-none"
           aria-describedby={undefined}
         >
           {isLoading || !card ? (
@@ -49,7 +49,7 @@ export function CardModal() {
             </div>
           ) : (
             <>
-              <div className="flex items-start justify-between gap-3 border-b border-border p-4">
+              <div className="flex items-start justify-between gap-3 border-b border-[var(--rule-strong)] p-4">
                 <div className="min-w-0 flex-1">
                   <RadixDialog.Title asChild>
                     {editingTitle ? (
@@ -71,14 +71,14 @@ export function CardModal() {
                           setTitle(card.title);
                           setEditingTitle(true);
                         }}
-                        className="rounded px-1 py-0.5 text-left text-lg font-semibold text-foreground hover:bg-surface-hover"
+                        className="rounded-[var(--r-sm)] px-1 py-0.5 text-left text-lg font-semibold text-foreground hover:bg-[var(--sunken)]"
                       >
                         {card.title}
                       </button>
                     )}
                   </RadixDialog.Title>
                 </div>
-                <RadixDialog.Close className="rounded-md p-1.5 text-muted-foreground hover:bg-surface-hover hover:text-foreground">
+                <RadixDialog.Close className="rounded-full p-1.5 text-muted-foreground hover:bg-[var(--sunken)] hover:text-foreground">
                   <X size={18} />
                 </RadixDialog.Close>
               </div>
@@ -152,7 +152,7 @@ export function CardModal() {
 
                 <Section icon={<Clock size={15} />} title="Activity">
                   <CardComments boardId={boardId!} cardId={card.id} comments={card.comments} />
-                  <div className="mt-4 border-t border-border pt-3">
+                  <div className="mt-4 border-t border-[var(--rule)] pt-3">
                     <CardActivityLog cardId={card.id} />
                   </div>
                 </Section>
@@ -168,9 +168,9 @@ export function CardModal() {
 function Section({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return (
     <div className="mb-6">
-      <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+      <div className="kicker mb-2.5 flex items-center gap-1.5 text-[var(--accent)]">
         {icon}
-        {title}
+        <span className="text-muted-foreground">{title}</span>
       </div>
       <div className="pl-1">{children}</div>
     </div>

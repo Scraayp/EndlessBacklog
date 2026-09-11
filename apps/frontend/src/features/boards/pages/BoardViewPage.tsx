@@ -182,9 +182,9 @@ export function BoardViewPage() {
       className="flex h-full flex-col bg-cover bg-center"
       style={board ? boardBackgroundStyle(board.backgroundType, board.backgroundValue) : undefined}
     >
-      <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-black/15 px-4 py-2.5 backdrop-blur-md">
-        <h1 className="truncate text-base font-semibold text-white drop-shadow">{board?.name}</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-black/15 px-4 py-2.5 backdrop-blur-md">
+        <h1 className="min-w-0 truncate text-base font-semibold text-white drop-shadow">{board?.name}</h1>
+        <div className="flex flex-wrap items-center gap-2">
           <FilterBar />
           {members.length > 0 && (
             <button
@@ -225,7 +225,7 @@ export function BoardViewPage() {
 
           <div className="w-72 shrink-0">
             {addingList ? (
-              <div className="space-y-1.5 rounded-lg bg-surface p-2.5">
+              <div className="glass space-y-1.5 rounded-[var(--r-md)] p-2.5">
                 <Input
                   autoFocus
                   placeholder="List name"
@@ -249,7 +249,7 @@ export function BoardViewPage() {
         <DragOverlay>
           {activeCard && <CardTile card={activeCard} onOpen={() => {}} />}
           {activeList && (
-            <div className="w-72 rounded-lg bg-surface p-2.5 shadow-lg">
+            <div className="glass w-72 rounded-[var(--r-md)] p-2.5 shadow-[var(--shadow-lg)]">
               <p className="text-sm font-semibold text-foreground">{activeList.name}</p>
             </div>
           )}

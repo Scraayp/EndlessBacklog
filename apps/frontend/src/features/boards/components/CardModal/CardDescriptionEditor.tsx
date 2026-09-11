@@ -47,7 +47,7 @@ export function CardDescriptionEditor({ descriptionHtml, onSave }: Props) {
   return (
     <div>
       {editing && (
-        <div className="mb-1.5 flex gap-1 rounded-md border border-border bg-surface p-1">
+        <div className="mb-1.5 flex gap-1 rounded-full border border-[var(--rule)] bg-[var(--sunken)] p-1">
           <ToolbarButton active={editor?.isActive("bold")} onClick={() => editor?.chain().focus().toggleBold().run()}>
             <Bold size={14} />
           </ToolbarButton>
@@ -65,8 +65,8 @@ export function CardDescriptionEditor({ descriptionHtml, onSave }: Props) {
       <div
         onClick={() => !editing && setEditing(true)}
         className={clsx(
-          "rounded-md border px-3 py-2",
-          editing ? "border-primary-500 bg-background" : "cursor-text border-transparent bg-surface hover:bg-surface-hover",
+          "rounded-[var(--r-md)] border px-3 py-2 transition-colors",
+          editing ? "border-[var(--accent)] bg-[var(--bg)]" : "cursor-text border-transparent bg-[var(--sunken)] hover:bg-[var(--rule)]",
         )}
       >
         <EditorContent editor={editor} />
@@ -91,7 +91,7 @@ function ToolbarButton({ active, onClick, children }: { active?: boolean; onClic
     <button
       type="button"
       onClick={onClick}
-      className={clsx("rounded p-1.5", active ? "bg-primary-500 text-white" : "text-muted-foreground hover:bg-surface-hover")}
+      className={clsx("rounded-full p-1.5", active ? "bg-[var(--accent)] text-white" : "text-muted-foreground hover:bg-[var(--rule)]")}
     >
       {children}
     </button>

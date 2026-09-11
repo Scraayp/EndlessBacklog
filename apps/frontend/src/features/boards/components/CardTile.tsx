@@ -30,12 +30,13 @@ export function CardTile({ card, onOpen }: CardTileProps) {
       {...listeners}
       onClick={onOpen}
       className={clsx(
-        "cursor-pointer rounded-lg border border-border bg-background p-2.5 shadow-sm transition-shadow hover:shadow-md",
+        "glass cursor-pointer rounded-[var(--r-md)] p-2.5 transition-[transform,box-shadow,border-color] duration-150",
+        "hover:-translate-y-0.5 hover:border-[var(--accent)] hover:shadow-[var(--shadow-lg)]",
         isDragging && "opacity-40",
       )}
     >
       {card.coverUrl && (
-        <img src={card.coverUrl} alt="" className="mb-2 h-24 w-full rounded object-cover" />
+        <img src={card.coverUrl} alt="" className="mb-2 h-24 w-full rounded-[var(--r-sm)] object-cover" />
       )}
       {card.labels.length > 0 && (
         <div className="mb-1.5 flex flex-wrap gap-1">
@@ -49,7 +50,7 @@ export function CardTile({ card, onOpen }: CardTileProps) {
       {(card.dueDate || hasChecklist || card.commentCount > 0 || card.attachmentCount > 0 || card.members.length > 0) && (
         <div className="mt-2 flex flex-wrap items-center gap-2.5 text-xs text-muted-foreground">
           {card.dueDate && (
-            <span className={clsx("inline-flex items-center gap-1 rounded px-1.5 py-0.5", overdue && "bg-danger/10 text-danger")}>
+            <span className={clsx("inline-flex items-center gap-1 rounded-full px-1.5 py-0.5", overdue && "bg-danger/10 text-danger")}>
               <Clock size={12} />
               {format(new Date(card.dueDate), "MMM d")}
             </span>
