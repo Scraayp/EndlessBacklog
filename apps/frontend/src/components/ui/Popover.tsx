@@ -20,7 +20,7 @@ export function Popover({ trigger, children, open, onOpenChange, align = "start"
           align={align}
           sideOffset={6}
           className={clsx(
-            "z-50 w-72 rounded-lg border border-border bg-background p-3 shadow-lg focus:outline-none",
+            "glass z-50 w-72 rounded-[var(--r-xl)] p-3 shadow-[var(--shadow-lg)] focus:outline-none",
             className,
           )}
         >

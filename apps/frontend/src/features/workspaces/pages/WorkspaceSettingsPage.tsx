@@ -26,7 +26,7 @@ export function WorkspaceSettingsPage() {
       <p className="mb-6 text-sm text-muted-foreground">Manage members and their roles.</p>
 
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">Members</h2>
+        <h2 className="kicker">Members</h2>
         {isAdmin && (
           <Button size="sm" onClick={() => setInviting(true)}>
             <UserPlus size={14} /> Invite
@@ -39,7 +39,7 @@ export function WorkspaceSettingsPage() {
           <Spinner size={22} />
         </div>
       ) : (
-        <div className="divide-y divide-border rounded-lg border border-border">
+        <div className="glass divide-y divide-[var(--rule)] rounded-[var(--r-md)]">
           {(members ?? []).map((m) => (
             <div key={m.id} className="flex items-center gap-3 p-3">
               {m.user ? (
@@ -56,7 +56,7 @@ export function WorkspaceSettingsPage() {
                   <select
                     value={m.role}
                     onChange={(e) => updateRole.mutate({ memberId: m.id, role: e.target.value as WorkspaceRole })}
-                    className="rounded-md border border-border bg-background px-2 py-1 text-xs text-foreground"
+                    className="rounded-full border border-[var(--rule)] bg-[var(--sunken)] px-2.5 py-1 text-xs text-foreground"
                   >
                     {WORKSPACE_ROLES.map((r) => (
                       <option key={r} value={r}>
@@ -67,7 +67,7 @@ export function WorkspaceSettingsPage() {
                   {m.userId !== currentUser?.id && (
                     <button
                       onClick={() => removeMember.mutate(m.id)}
-                      className="rounded p-1.5 text-muted-foreground hover:bg-surface-hover hover:text-danger"
+                      className="rounded-full p-1.5 text-muted-foreground hover:bg-[var(--sunken)] hover:text-danger"
                     >
                       <Trash2 size={14} />
                     </button>

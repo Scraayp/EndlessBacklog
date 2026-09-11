@@ -24,14 +24,14 @@ export function WorkspaceListPage() {
           <Spinner size={24} />
         </div>
       ) : workspaces && workspaces.length > 0 ? (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
           {workspaces.map((ws) => (
             <Link
               key={ws.id}
               to={`/workspaces/${ws.id}`}
-              className="rounded-lg border border-border bg-background p-4 shadow-sm transition-shadow hover:shadow-md"
+              className="glass rounded-[var(--r-md)] p-4 transition-[transform,box-shadow,border-color] duration-150 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:shadow-[var(--shadow-lg)]"
             >
-              <div className="mb-2 flex size-9 items-center justify-center rounded-md bg-primary-500 text-sm font-bold text-white">
+              <div className="mb-2 flex size-9 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-bold text-white">
                 {ws.name.slice(0, 1).toUpperCase()}
               </div>
               <p className="font-medium text-foreground">{ws.name}</p>
@@ -42,7 +42,7 @@ export function WorkspaceListPage() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center rounded-lg border border-dashed border-border p-10 text-center">
+        <div className="flex flex-col items-center rounded-[var(--r-md)] border border-dashed border-[var(--rule-strong)] p-10 text-center">
           <img src="/png/logo-mark-muted-160.png" alt="" aria-hidden="true" width={64} height={64} className="mb-3 opacity-80" />
           <p className="text-sm text-muted-foreground">You're not in any workspaces yet.</p>
           <Button className="mt-3" onClick={() => setCreating(true)}>

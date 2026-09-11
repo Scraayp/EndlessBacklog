@@ -20,7 +20,7 @@ export function AddCardComposer({ onAdd }: { onAdd: (title: string) => void }) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left text-sm text-muted-foreground hover:bg-surface-hover hover:text-foreground"
+        className="flex w-full items-center gap-1.5 rounded-full px-2.5 py-1.5 text-left text-sm text-muted-foreground hover:bg-[var(--sunken)] hover:text-foreground"
       >
         <Plus size={16} /> Add a card
       </button>
@@ -45,7 +45,7 @@ export function AddCardComposer({ onAdd }: { onAdd: (title: string) => void }) {
         <Button type="submit" size="sm">
           Add card
         </Button>
-        <button type="button" onClick={() => setOpen(false)} className="rounded p-1 text-muted-foreground hover:bg-surface-hover">
+        <button type="button" onClick={() => setOpen(false)} className="rounded-full p-1 text-muted-foreground hover:bg-[var(--sunken)]">
           <X size={16} />
         </button>
       </div>

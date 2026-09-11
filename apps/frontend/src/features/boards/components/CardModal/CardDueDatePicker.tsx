@@ -40,7 +40,7 @@ export function CardDueDatePicker({ dueDate, onChange }: Props) {
             onChange(null);
             setOpen(false);
           }}
-          className="mt-1 flex w-full items-center justify-center gap-1 rounded-md border border-border py-1.5 text-xs text-muted-foreground hover:bg-surface-hover"
+          className="mt-1 flex w-full items-center justify-center gap-1 rounded-full border border-[var(--rule)] py-1.5 text-xs text-muted-foreground hover:bg-[var(--sunken)]"
         >
           <X size={12} /> Remove due date
         </button>

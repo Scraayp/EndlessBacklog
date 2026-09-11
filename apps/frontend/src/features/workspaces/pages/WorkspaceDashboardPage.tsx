@@ -17,7 +17,7 @@ export function WorkspaceDashboardPage() {
     <div className="mx-auto max-w-5xl p-6">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-lg bg-primary-500/10 text-primary-600 dark:text-primary-300">
+          <span className="flex size-9 items-center justify-center rounded-[var(--r-md)] bg-[var(--accent-soft)] text-[var(--accent)]">
             <LayoutGrid size={18} />
           </span>
           <div>
@@ -42,23 +42,23 @@ export function WorkspaceDashboardPage() {
           <Spinner size={24} />
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))" }}>
           {(boards ?? []).map((board) => (
             <Link
               key={board.id}
               to={`/boards/${board.id}`}
-              className="group relative flex h-28 flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center p-3 shadow-sm ring-1 ring-black/5 transition-all hover:shadow-md hover:ring-black/10"
-              style={boardBackgroundStyle(board.backgroundType, board.backgroundValue)}
+              className="glass group relative flex h-28 flex-col justify-end overflow-hidden rounded-[var(--r-md)] p-3 transition-[transform,box-shadow,border-color] duration-150 hover:-translate-y-[3px] hover:border-[var(--accent)] hover:shadow-[var(--shadow-lg)]"
             >
-              <div className="absolute inset-x-0 bottom-0 h-14 bg-linear-to-t from-black/40 to-transparent" />
-              <span className="relative truncate text-sm font-semibold text-white [text-shadow:0_1px_2px_rgb(0_0_0/0.4)]">
-                {board.name}
-              </span>
+              <span
+                className="absolute inset-x-0 top-0 h-1.5 rounded-t-[var(--r-md)] bg-cover bg-center"
+                style={boardBackgroundStyle(board.backgroundType, board.backgroundValue)}
+              />
+              <span className="relative truncate text-sm font-semibold text-foreground">{board.name}</span>
             </Link>
           ))}
           <button
             onClick={() => setCreating(true)}
-            className="flex h-28 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-border text-sm text-muted-foreground transition-colors hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-300"
+            className="flex h-28 flex-col items-center justify-center gap-1 rounded-[var(--r-md)] border border-dashed border-[var(--rule-strong)] text-sm text-muted-foreground transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
           >
             <Plus size={18} />
             Create board

@@ -34,13 +34,13 @@ export function BoardBackgroundPicker({ backgroundType, backgroundValue, onChang
   return (
     <div className="space-y-3">
       <div
-        className="flex h-24 items-center justify-center rounded-lg text-sm font-medium text-white shadow-inner"
+        className="flex h-24 items-center justify-center rounded-[var(--r-md)] text-sm font-medium text-white shadow-inner"
         style={previewStyle}
       >
         {tab === "image" && !imageUrl && <ImageIcon size={20} className="text-white/70" />}
       </div>
 
-      <div className="flex gap-1 rounded-md bg-surface p-1 text-sm">
+      <div className="flex gap-1 rounded-full bg-[var(--sunken)] p-1 text-sm">
         {TABS.map((t) => (
           <button
             key={t.key}
@@ -50,8 +50,8 @@ export function BoardBackgroundPicker({ backgroundType, backgroundValue, onChang
             // used to edit an already-live board from Board details).
             onClick={() => setTab(t.key)}
             className={clsx(
-              "flex-1 rounded px-2 py-1.5 font-medium transition-colors",
-              tab === t.key ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+              "flex-1 rounded-full px-2 py-1.5 font-medium transition-colors",
+              tab === t.key ? "bg-[var(--accent-soft)] text-[var(--accent)]" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {t.label}
@@ -68,8 +68,8 @@ export function BoardBackgroundPicker({ backgroundType, backgroundValue, onChang
               title={c.name}
               onClick={() => onChange("color", c.value)}
               className={clsx(
-                "size-8 rounded-md transition-transform hover:scale-105",
-                backgroundType === "color" && backgroundValue === c.value && "ring-2 ring-offset-2 ring-offset-background ring-primary-500",
+                "size-8 rounded-full transition-transform hover:scale-105",
+                backgroundType === "color" && backgroundValue === c.value && "ring-2 ring-offset-2 ring-offset-background ring-[var(--accent)]",
               )}
               style={{ backgroundColor: c.value }}
             />
@@ -86,8 +86,8 @@ export function BoardBackgroundPicker({ backgroundType, backgroundValue, onChang
               title={g.name}
               onClick={() => onChange("gradient", g.key)}
               className={clsx(
-                "size-8 rounded-md transition-transform hover:scale-105",
-                backgroundType === "gradient" && backgroundValue === g.key && "ring-2 ring-offset-2 ring-offset-background ring-primary-500",
+                "size-8 rounded-full transition-transform hover:scale-105",
+                backgroundType === "gradient" && backgroundValue === g.key && "ring-2 ring-offset-2 ring-offset-background ring-[var(--accent)]",
               )}
               style={{ backgroundImage: g.value }}
             />

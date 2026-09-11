@@ -16,11 +16,11 @@ export function Dialog({ open, onOpenChange, title, description, children, class
   return (
     <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
+        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" />
         <RadixDialog.Content
           className={clsx(
             "fixed left-1/2 top-1/2 z-50 max-h-[85vh] w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
-            "overflow-y-auto rounded-xl border border-border bg-background p-6 shadow-2xl focus:outline-none",
+            "glass overflow-y-auto rounded-[var(--r-xl)] p-6 shadow-[var(--shadow-lg)] focus:outline-none",
             className,
           )}
         >
@@ -33,7 +33,7 @@ export function Dialog({ open, onOpenChange, title, description, children, class
                 </RadixDialog.Description>
               )}
             </div>
-            <RadixDialog.Close className="rounded-md p-1 text-muted-foreground hover:bg-surface-hover hover:text-foreground">
+            <RadixDialog.Close className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-[var(--sunken)] hover:text-foreground">
               <X size={18} />
             </RadixDialog.Close>
           </div>

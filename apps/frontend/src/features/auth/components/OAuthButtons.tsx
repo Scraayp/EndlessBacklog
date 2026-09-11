@@ -25,10 +25,10 @@ export function OAuthButtons() {
     <div className="mt-6">
       <div className="relative mb-4">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border" />
+          <div className="w-full border-t border-[var(--rule)]" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-background px-2 text-muted-foreground">or</span>
+          <span className="bg-[var(--surface)] px-2 text-muted-foreground">or</span>
         </div>
       </div>
       <div className="space-y-2">

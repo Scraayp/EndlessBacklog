@@ -36,9 +36,9 @@ export function BoardDetailsPanel() {
   return (
     <RadixDialog.Root open onOpenChange={(open) => !open && close()}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
+        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" />
         <RadixDialog.Content
-          className="sheet-panel fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-md flex-col overflow-hidden border-l border-border bg-background shadow-2xl focus:outline-none"
+          className="sheet-panel glass fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-md flex-col overflow-hidden rounded-l-[var(--r-xl)] rounded-r-none border-r-0 border-l-[var(--rule-strong)] shadow-[var(--shadow-lg)] focus:outline-none"
           aria-describedby={undefined}
         >
           {boardQuery.isLoading || !board ? (
@@ -47,7 +47,7 @@ export function BoardDetailsPanel() {
             </div>
           ) : (
             <>
-              <div className="flex items-start justify-between gap-3 border-b border-border p-4">
+              <div className="flex items-start justify-between gap-3 border-b border-[var(--rule-strong)] p-4">
                 <div className="min-w-0 flex-1">
                   <p className="mb-1 flex items-center gap-1 text-xs text-muted-foreground">
                     {workspaceQuery.data?.workspace.name && (
@@ -77,14 +77,14 @@ export function BoardDetailsPanel() {
                           setName(board.name);
                           setEditingName(true);
                         }}
-                        className="rounded px-1 py-0.5 text-left text-lg font-semibold text-foreground enabled:hover:bg-surface-hover"
+                        className="rounded-[var(--r-sm)] px-1 py-0.5 text-left text-lg font-semibold text-foreground enabled:hover:bg-[var(--sunken)]"
                       >
                         {board.name}
                       </button>
                     )}
                   </RadixDialog.Title>
                 </div>
-                <RadixDialog.Close className="rounded-md p-1.5 text-muted-foreground hover:bg-surface-hover hover:text-foreground">
+                <RadixDialog.Close className="rounded-full p-1.5 text-muted-foreground hover:bg-[var(--sunken)] hover:text-foreground">
                   <X size={18} />
                 </RadixDialog.Close>
               </div>
@@ -98,7 +98,7 @@ export function BoardDetailsPanel() {
                       onChange={(backgroundType, backgroundValue) => updateBoard.mutate({ backgroundType, backgroundValue })}
                     />
                   ) : (
-                    <div className="h-16 rounded-lg" style={boardBackgroundStyle(board.backgroundType, board.backgroundValue)} />
+                    <div className="h-16 rounded-[var(--r-md)]" style={boardBackgroundStyle(board.backgroundType, board.backgroundValue)} />
                   )}
                 </Section>
 
@@ -116,7 +116,7 @@ export function BoardDetailsPanel() {
                 </Section>
 
                 {isAdmin && (
-                  <div className="mt-6 border-t border-border pt-4">
+                  <div className="mt-6 border-t border-[var(--rule)] pt-4">
                     <p className="mb-1 text-xs text-muted-foreground">
                       Created {formatDistanceToNow(new Date(board.createdAt), { addSuffix: true })}
                     </p>
@@ -149,9 +149,9 @@ export function BoardDetailsPanel() {
 function Section({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return (
     <div className="mb-6">
-      <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+      <div className="kicker mb-2.5 flex items-center gap-1.5 text-[var(--accent)]">
         {icon}
-        {title}
+        <span className="text-muted-foreground">{title}</span>
       </div>
       <div className="pl-1">{children}</div>
     </div>

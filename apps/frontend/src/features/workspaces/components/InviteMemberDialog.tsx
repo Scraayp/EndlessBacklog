@@ -61,7 +61,7 @@ export function InviteMemberDialog({ workspaceId, open, onOpenChange }: { worksp
             <select
               id="invite-role"
               {...register("role")}
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full rounded-[var(--r-sm)] border border-[var(--rule)] bg-[var(--sunken)] px-3 py-2 text-sm text-foreground focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-soft)]"
             >
               {WORKSPACE_ROLES.map((r) => (
                 <option key={r} value={r}>
