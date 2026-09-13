@@ -167,79 +167,98 @@
   --shadow-2xl: var(--shadow-lg);
 }
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(900px 520px at 12% -10%, var(--accent-soft), transparent 70%),
-    radial-gradient(760px 460px at 96% 4%, rgba(88, 101, 242, 0.1), transparent 72%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
-}
-
-* {
-  border-color: var(--color-border);
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* Rounded, translucent scrollbars — Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--rule-strong) transparent;
-}
-
-/* Rounded, translucent scrollbars — WebKit/Blink */
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-*::-webkit-scrollbar-thumb {
-  background-color: var(--rule-strong);
-  border-radius: var(--r-pill);
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-/* Board details slide-over (see BoardDetailsPanel) */
-@keyframes sheet-slide-in {
-  from {
-    transform: translateX(100%);
+/* Base/reset rules live in Tailwind's own "base" layer (rather than as
+   unlayered CSS) so a component's own utility classes — e.g. the
+   `focus:outline-none` every Radix Dialog/Popover/DropdownMenu content
+   already sets — can win over them. Cascade layers are resolved by layer
+   order first and specificity second, so an unlayered rule would otherwise
+   beat *every* Tailwind utility regardless of selector weight, which is
+   exactly what put a permanent focus ring around every modal/popover here. */
+@layer base {
+  html,
+  body {
+    height: 100%;
   }
-  to {
-    transform: translateX(0);
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(900px 520px at 12% -10%, var(--accent-soft), transparent 70%),
+      radial-gradient(760px 460px at 96% 4%, rgba(88, 101, 242, 0.1), transparent 72%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  * {
+    border-color: var(--color-border);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Rounded, translucent scrollbars — Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule-strong) transparent;
+  }
+
+  /* Rounded, translucent scrollbars — WebKit/Blink */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--rule-strong);
+    border-radius: var(--r-pill);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  /* Board details slide-over (see BoardDetailsPanel) */
+  @keyframes sheet-slide-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  .sheet-panel[data-state="open"] {
+    animation: sheet-slide-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
-.sheet-panel[data-state="open"] {
-  animation: sheet-slide-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
 
-/* Shared micro-label utility — section kickers, column headers, meta text */
-.kicker {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+/* Shared surface/typography helpers live in "components" — one step below
+   Tailwind's own "utilities" layer — so an arbitrary-value utility appended
+   after .kicker/.glass in a className list (e.g. `shadow-[var(--shadow-lg)]`
+   to lift a modal above the default .glass shadow) always wins, regardless
+   of class order. */
+@layer components {
+  /* Shared micro-label utility — section kickers, column headers, meta text */
+  .kicker {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 
-/* Shared glass-surface utility — cards, modals, drawers, sidebars, popovers */
-.glass {
-  background: var(--surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--rule);
-  box-shadow: var(--shadow);
+  /* Shared glass-surface utility — cards, modals, drawers, sidebars, popovers.
+     Only the standard `backdrop-filter` is declared: Lightning CSS (Vite's
+     CSS minifier) adds the -webkit- prefix itself, and writing both by hand
+     makes it collapse the pair down to *only* the prefixed one, silently
+     turning the blur off in every browser. */
+  .glass {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow);
+  }
 }
