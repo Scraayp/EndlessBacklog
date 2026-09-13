@@ -12,12 +12,12 @@ const STORAGE_KEY = "endlessbacklog:theme";
 function applyToDocument(pref: ThemePreference): void {
   const root = document.documentElement;
   root.classList.remove("light", "dark");
-  if (pref === "system") {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    root.classList.add(prefersDark ? "dark" : "light");
-  } else {
-    root.classList.add(pref);
-  }
+  const resolved = pref === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : pref;
+  root.classList.add(resolved);
+  // `data-theme` is what styles/theme.css keys its soft-glass tokens off of;
+  // the `.light`/`.dark` classes above stay in sync for the handful of
+  // Tailwind `dark:` variants elsewhere in the app.
+  root.setAttribute("data-theme", resolved);
 }
 
 function readInitialPreference(): ThemePreference {

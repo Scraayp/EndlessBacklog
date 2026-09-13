@@ -7,24 +7,51 @@
    explicit choice has been made (no .light/.dark class on <html> yet). */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ---------------------------------------------------------------------- *
+ * Design tokens — the single source of truth for color, radius and
+ * elevation. Every surface in the app reads from these; nothing below this
+ * block should hard-code a hex, a border-radius or a box-shadow.
+ * ---------------------------------------------------------------------- */
 :root {
+  /* Soft-glass palette (light) */
+  --bg: #f2f3f5;
+  --surface: rgba(255, 255, 255, 0.72);
+  --sunken: rgba(20, 24, 33, 0.045);
+  --ink: #171a1f;
+  --muted: #6a7180;
+  --rule: rgba(20, 24, 33, 0.09);
+  --rule-strong: rgba(20, 24, 33, 0.16);
+  --accent: #16a34a;
+  --accent-press: #15803d;
+  --accent-soft: rgba(22, 163, 74, 0.12);
+  --shadow: 0 1px 2px rgba(20, 24, 33, 0.05), 0 8px 24px rgba(20, 24, 33, 0.06);
+  --shadow-lg: 0 32px 80px rgba(20, 24, 33, 0.22);
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
   /* Green accent scale — used deliberately sparingly (primary actions, focus
      rings, selected states) rather than tinting the neutral chrome. Every
-     other surface below is a true (non-green) neutral gray. */
+     other surface below is a true (non-green) neutral gray. Derived from
+     --accent/--accent-press above, so it moves with the tokens. */
   --color-primary-50: #ecfdf3;
   --color-primary-100: #d1fae0;
   --color-primary-300: #6ee7ab;
-  --color-primary-500: #16a34a;
-  --color-primary-600: #15803d;
+  --color-primary-500: var(--accent);
+  --color-primary-600: var(--accent-press);
   --color-primary-700: #166534;
 
-  /* Neutral chrome (zinc-based, no green tint) */
-  --color-background: #ffffff;
-  --color-surface: #f7f7f8;
-  --color-surface-hover: #eeeef0;
-  --color-border: #e4e4e8;
-  --color-foreground: #18181b;
-  --color-muted-foreground: #71717a;
+  /* Neutral chrome — aliased onto the soft-glass tokens above */
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--sunken);
+  --color-border: var(--rule);
+  --color-foreground: var(--ink);
+  --color-muted-foreground: var(--muted);
   --color-danger: #dc2626;
   --color-warning: #b45309;
 
@@ -45,14 +72,21 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: #0b0b0d;
-    --color-surface: #17171a;
-    --color-surface-hover: #202024;
-    --color-border: #2b2b30;
-    --color-foreground: #f4f4f5;
-    --color-muted-foreground: #a1a1aa;
-    --color-primary-500: #22c55e;
-    --color-primary-600: #16a34a;
+    --bg: #0a0b0d;
+    --surface: rgba(255, 255, 255, 0.055);
+    --sunken: rgba(255, 255, 255, 0.045);
+    --ink: #f2f4f7;
+    --muted: #9aa2b1;
+    --rule: rgba(255, 255, 255, 0.09);
+    --rule-strong: rgba(255, 255, 255, 0.16);
+    --accent: #22c55e;
+    --accent-press: #16a34a;
+    --accent-soft: rgba(34, 197, 94, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 32px 80px rgba(0, 0, 0, 0.55);
+
+    --color-primary-500: var(--accent);
+    --color-primary-600: var(--accent-press);
     --label-green: #1f845a;
     --label-yellow: #946f00;
     --label-orange: #a54800;
@@ -67,15 +101,23 @@
   }
 }
 
-:root.dark {
-  --color-background: #0b0b0d;
-  --color-surface: #17171a;
-  --color-surface-hover: #202024;
-  --color-border: #2b2b30;
-  --color-foreground: #f4f4f5;
-  --color-muted-foreground: #a1a1aa;
-  --color-primary-500: #22c55e;
-  --color-primary-600: #16a34a;
+:root.dark,
+:root[data-theme="dark"] {
+  --bg: #0a0b0d;
+  --surface: rgba(255, 255, 255, 0.055);
+  --sunken: rgba(255, 255, 255, 0.045);
+  --ink: #f2f4f7;
+  --muted: #9aa2b1;
+  --rule: rgba(255, 255, 255, 0.09);
+  --rule-strong: rgba(255, 255, 255, 0.16);
+  --accent: #22c55e;
+  --accent-press: #16a34a;
+  --accent-soft: rgba(34, 197, 94, 0.14);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 32px 80px rgba(0, 0, 0, 0.55);
+
+  --color-primary-500: var(--accent);
+  --color-primary-600: var(--accent-press);
   --label-green: #1f845a;
   --label-yellow: #946f00;
   --label-orange: #a54800;
@@ -106,6 +148,23 @@
   --color-warning: var(--color-warning);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Soft-glass radii — rounds every rounded-sm/md/lg/xl utility in the app.
+     rounded-full is already a pill/circle at any size, so it needs no
+     override to match --r-pill. */
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+
+  /* Two-tier elevation — every shadow-* utility collapses onto the soft
+     "resting" shadow or the "lifted" one used by modals/drawers. */
+  --shadow-xs: var(--shadow);
+  --shadow-sm: var(--shadow);
+  --shadow-md: var(--shadow);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-lg);
+  --shadow-2xl: var(--shadow-lg);
 }
 
 html,
@@ -114,13 +173,44 @@ body {
 }
 
 body {
-  background-color: var(--color-background);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(900px 520px at 12% -10%, var(--accent-soft), transparent 70%),
+    radial-gradient(760px 460px at 96% 4%, rgba(88, 101, 242, 0.1), transparent 72%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--color-foreground);
   font-family: var(--font-sans);
 }
 
 * {
   border-color: var(--color-border);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Rounded, translucent scrollbars — Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+/* Rounded, translucent scrollbars — WebKit/Blink */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--rule-strong);
+  border-radius: var(--r-pill);
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 /* Board details slide-over (see BoardDetailsPanel) */
@@ -134,4 +224,22 @@ body {
 }
 .sheet-panel[data-state="open"] {
   animation: sheet-slide-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Shared micro-label utility — section kickers, column headers, meta text */
+.kicker {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Shared glass-surface utility — cards, modals, drawers, sidebars, popovers */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow);
 }

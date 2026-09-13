@@ -69,12 +69,12 @@ export function CardComments({ boardId, cardId, comments }: { boardId: string; c
           onChange={(e) => handleChange(e.target.value)}
         />
         {mentionQuery !== null && suggestions.length > 0 && (
-          <div className="absolute z-10 mt-1 w-56 rounded-md border border-border bg-background p-1 shadow-lg">
+          <div className="glass absolute z-10 mt-1 w-56 rounded-[var(--r-md)] p-1 shadow-[var(--shadow-lg)]">
             {suggestions.map((m) => (
               <button
                 key={m.userId}
                 onClick={() => pickMention(m.user.displayName, m.userId)}
-                className="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-sm hover:bg-surface-hover"
+                className="flex w-full items-center gap-2 rounded-[var(--r-sm)] px-2 py-1 text-left text-sm hover:bg-[var(--accent-soft)]"
               >
                 <Avatar name={m.user.displayName} src={m.user.avatarUrl} size="sm" />
                 {m.user.displayName}
@@ -106,7 +106,7 @@ export function CardComments({ boardId, cardId, comments }: { boardId: string; c
                   </button>
                 )}
               </div>
-              <div className="rounded-md bg-surface px-2.5 py-1.5 text-sm text-foreground" dangerouslySetInnerHTML={{ __html: c.bodyHtml }} />
+              <div className="rounded-[var(--r-md)] bg-[var(--sunken)] px-2.5 py-1.5 text-sm text-foreground" dangerouslySetInnerHTML={{ __html: c.bodyHtml }} />
             </div>
           </div>
         ))}

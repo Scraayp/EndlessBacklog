@@ -16,7 +16,7 @@ export function LabelChip({ color, name, size = "md", className }: LabelChipProp
   return (
     <span
       className={clsx(
-        "inline-flex items-center rounded font-medium text-white",
+        "inline-flex items-center overflow-hidden rounded-full font-medium text-white",
         size === "sm" ? "h-2 min-w-8" : "h-5 min-w-10 px-2 text-xs",
         className,
       )}

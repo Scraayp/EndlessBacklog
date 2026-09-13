@@ -66,7 +66,7 @@ function ChecklistSection({ boardId, cardId, checklist }: { boardId: string; car
         <p className="text-sm font-semibold text-foreground">{checklist.title}</p>
         <button
           onClick={() => removeChecklist.mutate(checklist.id)}
-          className="rounded p-1 text-muted-foreground hover:bg-surface-hover hover:text-danger"
+          className="rounded-full p-1 text-muted-foreground hover:bg-[var(--sunken)] hover:text-danger"
         >
           <Trash2 size={14} />
         </button>
@@ -81,19 +81,19 @@ function ChecklistSection({ boardId, cardId, checklist }: { boardId: string; car
       )}
       <div className="space-y-1">
         {checklist.items.map((item) => (
-          <label key={item.id} className="group flex items-center gap-2 rounded px-1 py-0.5 hover:bg-surface-hover">
+          <label key={item.id} className="group flex items-center gap-2 rounded-[var(--r-sm)] px-1 py-0.5 hover:bg-[var(--sunken)]">
             <input
               type="checkbox"
               checked={item.isChecked}
               onChange={(e) => toggleItem.mutate({ itemId: item.id, isChecked: e.target.checked })}
-              className="size-4 accent-primary-500"
+              className="size-4 rounded-[var(--r-sm)] accent-primary-500"
             />
             <span className={item.isChecked ? "flex-1 text-sm text-muted-foreground line-through" : "flex-1 text-sm text-foreground"}>
               {item.text}
             </span>
             <button
               onClick={() => removeItem.mutate(item.id)}
-              className="rounded p-0.5 text-muted-foreground opacity-0 hover:text-danger group-hover:opacity-100"
+              className="rounded-full p-0.5 text-muted-foreground opacity-0 hover:text-danger group-hover:opacity-100"
             >
               <Trash2 size={12} />
             </button>

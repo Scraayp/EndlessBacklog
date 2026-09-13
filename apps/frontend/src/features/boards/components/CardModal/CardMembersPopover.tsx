@@ -28,15 +28,15 @@ export function CardMembersPopover({ boardId, selectedMembers, onToggle }: Props
         </Button>
       }
     >
-      <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Board members</p>
+      <p className="kicker mb-2">Board members</p>
       <div className="space-y-1">
         {(membersQuery.data ?? []).map((m) => (
           <button
             key={m.userId}
             onClick={() => onToggle(m.userId)}
             className={clsx(
-              "flex w-full items-center gap-2 rounded-md p-1.5 text-left text-sm hover:bg-surface-hover",
-              selectedIds.has(m.userId) && "bg-primary-50 dark:bg-primary-700/30",
+              "flex w-full items-center gap-2 rounded-full p-1.5 text-left text-sm hover:bg-[var(--sunken)]",
+              selectedIds.has(m.userId) && "bg-[var(--accent-soft)]",
             )}
           >
             <Avatar name={m.user.displayName} src={m.user.avatarUrl} size="sm" />

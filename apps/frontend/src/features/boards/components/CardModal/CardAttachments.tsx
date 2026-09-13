@@ -48,11 +48,11 @@ export function CardAttachments({
 
       <div className="mt-2 space-y-1.5">
         {attachments.map((a) => (
-          <div key={a.id} className="group flex items-center gap-2 rounded-md border border-border p-2">
+          <div key={a.id} className="group flex items-center gap-2 rounded-[var(--r-sm)] border border-[var(--rule)] p-2 transition-colors hover:border-[var(--accent)]">
             {a.mimeType.startsWith("image/") ? (
-              <img src={a.url} alt={a.fileName} className="size-10 rounded object-cover" />
+              <img src={a.url} alt={a.fileName} className="size-10 rounded-[var(--r-sm)] object-cover" />
             ) : (
-              <div className="flex size-10 items-center justify-center rounded bg-surface-hover">
+              <div className="flex size-10 items-center justify-center rounded-[var(--r-sm)] bg-[var(--sunken)]">
                 <Paperclip size={16} className="text-muted-foreground" />
               </div>
             )}
@@ -67,13 +67,13 @@ export function CardAttachments({
             <button
               title="Set as cover"
               onClick={() => updateCard.mutate({ cardId, data: { coverAttachmentId: coverAttachmentId === a.id ? null : a.id } })}
-              className={`rounded p-1 opacity-0 group-hover:opacity-100 ${coverAttachmentId === a.id ? "text-primary-500 opacity-100" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-full p-1 opacity-0 group-hover:opacity-100 ${coverAttachmentId === a.id ? "text-primary-500 opacity-100" : "text-muted-foreground hover:text-foreground"}`}
             >
               <Star size={14} fill={coverAttachmentId === a.id ? "currentColor" : "none"} />
             </button>
             <button
               onClick={() => remove.mutate(a.id)}
-              className="rounded p-1 text-muted-foreground opacity-0 hover:text-danger group-hover:opacity-100"
+              className="rounded-full p-1 text-muted-foreground opacity-0 hover:text-danger group-hover:opacity-100"
             >
               <Trash2 size={14} />
             </button>

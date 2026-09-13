@@ -30,7 +30,7 @@ export function NotificationsPage() {
       ) : (data?.notifications.length ?? 0) === 0 ? (
         <p className="py-12 text-center text-sm text-muted-foreground">You're all caught up.</p>
       ) : (
-        <div className="divide-y divide-border rounded-lg border border-border">
+        <div className="glass divide-y divide-[var(--rule)] rounded-[var(--r-md)]">
           {data!.notifications.map((n) => (
             <button
               key={n.id}
@@ -39,7 +39,10 @@ export function NotificationsPage() {
                 const link = notificationLink(n);
                 if (link) navigate(link);
               }}
-              className={clsx("flex w-full items-start justify-between gap-3 p-3 text-left hover:bg-surface-hover", !n.isRead && "bg-primary-50 dark:bg-primary-700/20")}
+              className={clsx(
+                "flex w-full items-start justify-between gap-3 p-3 text-left transition-colors first:rounded-t-[var(--r-md)] last:rounded-b-[var(--r-md)] hover:bg-[var(--sunken)]",
+                !n.isRead && "bg-[var(--accent-soft)]",
+              )}
             >
               <p className="text-sm text-foreground">{notificationText(n)}</p>
               <span className="shrink-0 text-xs text-muted-foreground">{formatDistanceToNow(new Date(n.createdAt), { addSuffix: true })}</span>
