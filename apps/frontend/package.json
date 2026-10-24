@@ -55,7 +55,7 @@
     "@tailwindcss/vite": "^4.0.0",
     "@tailwindcss/typography": "^0.5.15",
     "typescript": "^5.7.0",
-    "vitest": "^2.1.8",
+    "vitest": "^4.1.11",
     "jsdom": "^25.0.1",
     "@testing-library/react": "^16.1.0",
     "@playwright/test": "^1.49.1"
